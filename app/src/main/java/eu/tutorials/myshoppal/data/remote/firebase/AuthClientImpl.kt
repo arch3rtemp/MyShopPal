@@ -19,8 +19,8 @@ class AuthClientImpl @Inject constructor(
             .addOnSuccessListener { result ->
                 val firebaseUser: FirebaseUser = result.user!!
                 val userId = firebaseUser.uid
-                auth.signOut()
                 reduce(user.copy(id = userId))
+                auth.signOut()
             }
             .await()
     }
