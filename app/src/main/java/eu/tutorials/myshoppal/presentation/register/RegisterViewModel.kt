@@ -30,9 +30,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun setStateError(message: String) {
-        setState { copy(
-            viewState = ViewState.Error
-        ) }
+        setState { copy(viewState = ViewState.Error) }
         setEffect { RegisterEffect.Error(message) }
     }
 

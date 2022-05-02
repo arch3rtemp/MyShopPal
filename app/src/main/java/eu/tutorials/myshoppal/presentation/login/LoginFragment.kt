@@ -13,7 +13,8 @@ import eu.tutorials.myshoppal.presentation.model.LoginUser
 import eu.tutorials.myshoppal.utils.showSnackbar
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<LoginEvent, LoginState, LoginEffect, FragmentLoginBinding, LoginViewModel>() {
+class LoginFragment :
+    BaseFragment<LoginEvent, LoginState, LoginEffect, FragmentLoginBinding, LoginViewModel>() {
     override val viewModel by viewModels<LoginViewModel>()
     override val bindLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentLoginBinding
         get() = FragmentLoginBinding::inflate
@@ -24,17 +25,29 @@ class LoginFragment : BaseFragment<LoginEvent, LoginState, LoginEffect, Fragment
 
     override fun renderState(state: LoginState) {
         when (state.viewState) {
-            ViewState.Idle -> { showLoginIdle() }
-            ViewState.Loading -> { showLoginLoading() }
-            ViewState.Success -> { showLoginSuccess() }
-            ViewState.Error -> { showLoginError() }
+            ViewState.Idle -> {
+                showLoginIdle()
+            }
+            ViewState.Loading -> {
+                showLoginLoading()
+            }
+            ViewState.Success -> {
+                showLoginSuccess()
+            }
+            ViewState.Error -> {
+                showLoginError()
+            }
         }
     }
 
     override fun renderEffect(effect: LoginEffect) {
         when (effect) {
-            is LoginEffect.Success -> { showSnackbar(effect.message, false) }
-            is LoginEffect.Error -> { showSnackbar(effect.message, true) }
+            is LoginEffect.Success -> {
+                showSnackbar(effect.message, false)
+            }
+            is LoginEffect.Error -> {
+                showSnackbar(effect.message, true)
+            }
         }
     }
 
@@ -48,7 +61,8 @@ class LoginFragment : BaseFragment<LoginEvent, LoginState, LoginEffect, Fragment
                 viewModel.setEvent(LoginEvent.OnLogin(getDataFromFields()))
             }
             tvForgotPassword.setOnClickListener {
-
+                val action = LoginFragmentDirections.actionLoginFragmentToRecoverFragment()
+                findNavController().navigate(action)
             }
         }
     }
@@ -61,15 +75,17 @@ class LoginFragment : BaseFragment<LoginEvent, LoginState, LoginEffect, Fragment
     }
 
     private fun showLoginIdle() = with(binding) {
-
+        dismissProgressDialog()
     }
 
     private fun showLoginLoading() = with(binding) {
         showProgressDialog(resources.getString(R.string.please_wait))
     }
+
     private fun showLoginSuccess() = with(binding) {
         dismissProgressDialog()
     }
+
     private fun showLoginError() = with(binding) {
         dismissProgressDialog()
     }

@@ -44,12 +44,8 @@ class RegisterFragment : BaseFragment<RegisterEvent, RegisterState, RegisterEffe
 
     private fun setListeners() {
         with(binding) {
-            ivBack.setOnClickListener {
-                findNavController().navigateUp()
-            }
-            tvLogin.setOnClickListener {
-                findNavController().navigateUp()
-            }
+            ivBack.setOnClickListener { findNavController().navigateUp() }
+            tvLogin.setOnClickListener { findNavController().navigateUp() }
             btnRegister.setOnClickListener { viewModel.setEvent(RegisterEvent.OnRegister(getDataFromFields())) }
         }
     }

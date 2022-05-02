@@ -8,7 +8,6 @@ import eu.tutorials.myshoppal.presentation.base.BaseViewModel
 import eu.tutorials.myshoppal.presentation.model.LoginUser
 import eu.tutorials.myshoppal.utils.toUserAuthModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,9 +18,7 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel<LoginEvent, LoginState, LoginEffect>() {
 
     override fun createInitialState(): LoginState {
-        return LoginState(
-            viewState = ViewState.Idle
-        )
+        return LoginState(viewState = ViewState.Idle)
     }
 
     override fun handleEvent(event: LoginEvent) {

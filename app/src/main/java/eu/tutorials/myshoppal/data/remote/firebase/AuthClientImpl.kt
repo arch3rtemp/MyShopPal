@@ -29,4 +29,9 @@ class AuthClientImpl @Inject constructor(
         auth.signInWithEmailAndPassword(user.email, user.password)
             .await()
     }
+
+    override suspend fun recoverPassword(email: String) {
+        auth.sendPasswordResetEmail(email)
+            .await()
+    }
 }
