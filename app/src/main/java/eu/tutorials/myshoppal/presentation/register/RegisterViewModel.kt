@@ -3,10 +3,10 @@ package eu.tutorials.myshoppal.presentation.register
 import android.text.TextUtils
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.tutorials.myshoppal.domain.use_case.register.RegisterUseCase
+import eu.tutorials.myshoppal.domain.use_case.register.RegisterAndSaveUserUseCase
 import eu.tutorials.myshoppal.presentation.base.BaseViewModel
 import eu.tutorials.myshoppal.presentation.model.RegisterUser
-import eu.tutorials.myshoppal.utils.toUserAuthModel
+import eu.tutorials.myshoppal.utils.toUserRegisterModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val registerUseCase: RegisterUseCase
+    private val registerAndSaveUserUseCase: RegisterAndSaveUserUseCase
 ) : BaseViewModel<RegisterEvent, RegisterState, RegisterEffect>() {
 
     override fun createInitialState(): RegisterState {
@@ -42,7 +42,7 @@ class RegisterViewModel @Inject constructor(
     private fun registerUser(registerUser: RegisterUser) {
         viewModelScope.launch {
             if (validateRegisterDetails(registerUser)) {
-                registerUseCase(registerUser.toUserAuthModel())
+                registerAndSaveUserUseCase(registerUser.toUserRegisterModel())
                     .onStart { setState { copy(viewState = ViewState.Loading) } }
                     .catch { setStateError(it.message.toString()) }
                     .collect { setStateSuccess("Registered successfully.") }

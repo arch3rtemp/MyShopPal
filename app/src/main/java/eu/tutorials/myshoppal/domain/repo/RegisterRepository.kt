@@ -1,8 +1,10 @@
 package eu.tutorials.myshoppal.domain.repo
 
-import eu.tutorials.myshoppal.data.remote.model.UserRegisterDataModel
+import eu.tutorials.myshoppal.domain.model.UserModel
+import eu.tutorials.myshoppal.domain.model.UserRegisterModel
 import kotlinx.coroutines.flow.Flow
 
 interface RegisterRepository {
-    fun registerUser(user: UserRegisterDataModel): Flow<Unit>
+    fun registerUser(user: UserRegisterModel): Flow<UserModel>
+    fun saveUser(user: UserModel): Flow<Unit>
 }

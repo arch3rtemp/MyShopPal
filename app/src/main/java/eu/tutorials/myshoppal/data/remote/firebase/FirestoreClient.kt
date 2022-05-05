@@ -1,7 +1,8 @@
 package eu.tutorials.myshoppal.data.remote.firebase
 
-import eu.tutorials.myshoppal.data.remote.model.UserRegisterDataModel
+import eu.tutorials.myshoppal.data.remote.model.UserDataModel
 
 interface FirestoreClient {
-    suspend fun registerUser(user: UserRegisterDataModel)
+    suspend fun saveUser(user: UserDataModel)
+    suspend fun getUserDetails(uid: String): UserDataModel
 }

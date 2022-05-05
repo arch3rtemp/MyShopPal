@@ -8,9 +8,10 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import eu.tutorials.myshoppal.domain.repo.LoginRepository
 import eu.tutorials.myshoppal.domain.repo.RecoverRepository
 import eu.tutorials.myshoppal.domain.repo.RegisterRepository
-import eu.tutorials.myshoppal.domain.use_case.register.LoginUseCase
-import eu.tutorials.myshoppal.domain.use_case.register.RecoverUseCase
-import eu.tutorials.myshoppal.domain.use_case.register.RegisterUseCase
+import eu.tutorials.myshoppal.domain.use_case.login.LoginUseCase
+import eu.tutorials.myshoppal.domain.use_case.recover.RecoverUseCase
+import eu.tutorials.myshoppal.domain.use_case.register.RegisterUserUseCase
+import eu.tutorials.myshoppal.domain.use_case.register.SaveUserUseCase
 import kotlinx.coroutines.Dispatchers
 
 @Module
@@ -19,8 +20,14 @@ object UseCaseModule {
 
     @Provides
     @ViewModelScoped
-    fun provideRegisterUseCase(registerRepository: RegisterRepository): RegisterUseCase {
-        return RegisterUseCase(registerRepository, Dispatchers.IO)
+    fun provideRegisterUserUseCase(registerRepository: RegisterRepository): RegisterUserUseCase {
+        return RegisterUserUseCase(registerRepository, Dispatchers.IO)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSaveUserUseCase(registerRepository: RegisterRepository): SaveUserUseCase {
+        return SaveUserUseCase(registerRepository, Dispatchers.IO)
     }
 
     @Provides

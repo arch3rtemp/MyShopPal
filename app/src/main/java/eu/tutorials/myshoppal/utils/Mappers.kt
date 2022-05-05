@@ -1,12 +1,12 @@
 package eu.tutorials.myshoppal.utils
 
-import eu.tutorials.myshoppal.data.remote.model.UserLoginDataModel
-import eu.tutorials.myshoppal.data.remote.model.UserRegisterDataModel
+import eu.tutorials.myshoppal.domain.model.UserLoginModel
+import eu.tutorials.myshoppal.domain.model.UserRegisterModel
 import eu.tutorials.myshoppal.presentation.model.LoginUser
 import eu.tutorials.myshoppal.presentation.model.RegisterUser
 
-fun RegisterUser.toUserAuthModel(): UserRegisterDataModel {
-    return UserRegisterDataModel(
+fun RegisterUser.toUserRegisterModel(): UserRegisterModel {
+    return UserRegisterModel(
         firstName = firstName,
         lastName = lastName,
         email = email,
@@ -14,8 +14,8 @@ fun RegisterUser.toUserAuthModel(): UserRegisterDataModel {
     )
 }
 
-fun LoginUser.toUserAuthModel(): UserLoginDataModel {
-    return UserLoginDataModel(
+fun LoginUser.toUserLoginModel(): UserLoginModel {
+    return UserLoginModel(
         email = email,
         password = password
     )

@@ -2,8 +2,10 @@ package eu.tutorials.myshoppal.data.remote.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import eu.tutorials.myshoppal.data.remote.model.UserDataModel
 import eu.tutorials.myshoppal.data.remote.model.UserLoginDataModel
 import eu.tutorials.myshoppal.data.remote.model.UserRegisterDataModel
+import eu.tutorials.myshoppal.data.remote.util.toUserDataModel
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -13,13 +15,13 @@ class AuthClientImpl @Inject constructor(
 
     override suspend fun createUser(
         user: UserRegisterDataModel,
-        reduce: (UserRegisterDataModel) -> Unit
+        reduce: (UserDataModel) -> Unit
     ) {
         auth.createUserWithEmailAndPassword(user.email, user.password)
             .addOnSuccessListener { result ->
                 val firebaseUser: FirebaseUser = result.user!!
                 val userId = firebaseUser.uid
-                reduce(user.copy(id = userId))
+                reduce(user.toUserDataModel(userId))
                 auth.signOut()
             }
             .await()
@@ -33,5 +35,9 @@ class AuthClientImpl @Inject constructor(
     override suspend fun recoverPassword(email: String) {
         auth.sendPasswordResetEmail(email)
             .await()
+    }
+
+    override fun getCurrentUserId(): String {
+        return auth.currentUser?.uid ?: ""
     }
 }

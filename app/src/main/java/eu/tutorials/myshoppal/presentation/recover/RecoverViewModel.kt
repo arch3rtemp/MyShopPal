@@ -3,7 +3,7 @@ package eu.tutorials.myshoppal.presentation.recover
 import android.text.TextUtils
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.tutorials.myshoppal.domain.use_case.register.RecoverUseCase
+import eu.tutorials.myshoppal.domain.use_case.recover.RecoverUseCase
 import eu.tutorials.myshoppal.presentation.base.BaseViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart

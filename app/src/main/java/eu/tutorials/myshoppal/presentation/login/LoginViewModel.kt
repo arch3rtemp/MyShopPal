@@ -3,10 +3,10 @@ package eu.tutorials.myshoppal.presentation.login
 import android.text.TextUtils
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.tutorials.myshoppal.domain.use_case.register.LoginUseCase
+import eu.tutorials.myshoppal.domain.use_case.login.LoginUseCase
 import eu.tutorials.myshoppal.presentation.base.BaseViewModel
 import eu.tutorials.myshoppal.presentation.model.LoginUser
-import eu.tutorials.myshoppal.utils.toUserAuthModel
+import eu.tutorials.myshoppal.utils.toUserLoginModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -44,7 +44,7 @@ class LoginViewModel @Inject constructor(
     private fun loginUser(loginUser: LoginUser) {
         viewModelScope.launch {
             if (validateLoginDetails(loginUser)) {
-                loginUseCase(loginUser.toUserAuthModel())
+                loginUseCase(loginUser.toUserLoginModel())
                     .onStart { setState { copy(viewState = ViewState.Loading) } }
                     .catch { setStateError(it.message.toString()) }
                     .collect { setStateSuccess("Logged in successfully.") }

@@ -1,4 +1,4 @@
-package eu.tutorials.myshoppal.domain.use_case.register
+package eu.tutorials.myshoppal.domain.use_case.recover
 
 import eu.tutorials.myshoppal.domain.repo.RecoverRepository
 import kotlinx.coroutines.CoroutineDispatcher

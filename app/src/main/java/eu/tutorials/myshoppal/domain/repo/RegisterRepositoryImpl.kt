@@ -1,14 +1,19 @@
 package eu.tutorials.myshoppal.domain.repo
 
 import eu.tutorials.myshoppal.data.remote.data_source.register.RegisterRemoteDataSource
-import eu.tutorials.myshoppal.data.remote.model.UserRegisterDataModel
+import eu.tutorials.myshoppal.domain.model.UserModel
+import eu.tutorials.myshoppal.domain.model.UserRegisterModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class RegisterRepositoryImpl @Inject constructor(
     private val registerRemoteDataSource: RegisterRemoteDataSource
 ) : RegisterRepository {
-    override fun registerUser(user: UserRegisterDataModel) = flow {
+    override fun registerUser(user: UserRegisterModel) = flow {
         emit(registerRemoteDataSource.registerUser(user))
+    }
+
+    override fun saveUser(user: UserModel) = flow {
+        emit(registerRemoteDataSource.saveUser(user))
     }
 }
