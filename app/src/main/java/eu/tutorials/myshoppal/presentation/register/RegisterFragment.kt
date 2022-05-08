@@ -74,11 +74,4 @@ class RegisterFragment : BaseFragment<RegisterEvent, RegisterState, RegisterEffe
     private fun showRegisterError() = with(binding) {
         dismissProgressDialog()
     }
-
-//    private fun initBackPressedCallback() {
-//        if (requireActivity() is MainActivity) {
-//            val activityMain = requireActivity() as MainActivity
-//            activityMain.doubleBackToExit()
-//        }
-//    }
 }

@@ -1,17 +1,24 @@
 package eu.tutorials.myshoppal.domain.use_case.login
 
 import eu.tutorials.myshoppal.domain.model.UserLoginModel
-import eu.tutorials.myshoppal.domain.repo.LoginRepository
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.flatMapConcat
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
-    private val loginRepository: LoginRepository,
-    private val dispatcher: CoroutineDispatcher
+    private val authUseCase: AuthUseCase,
+    private val retrieveUserUseCase: RetrieveUserUseCase,
+    private val saveUserToDiskUseCase: SaveUserToDiskUseCase
 ) {
+    @OptIn(FlowPreview::class)
     operator fun invoke(user: UserLoginModel): Flow<Unit> {
-        return loginRepository.loginUser(user).flowOn(dispatcher)
+        return authUseCase(user)
+            .flatMapConcat {
+                retrieveUserUseCase()
+                    .flatMapConcat {
+                        saveUserToDiskUseCase(it.firstName, it.lastName)
+                    }
+            }
     }
 }

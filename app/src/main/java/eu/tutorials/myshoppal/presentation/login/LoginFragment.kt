@@ -1,8 +1,11 @@
 package eu.tutorials.myshoppal.presentation.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,15 +18,20 @@ import eu.tutorials.myshoppal.utils.showSnackbar
 @AndroidEntryPoint
 class LoginFragment :
     BaseFragment<LoginEvent, LoginState, LoginEffect, FragmentLoginBinding, LoginViewModel>() {
+
     override val viewModel by viewModels<LoginViewModel>()
     override val bindLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentLoginBinding
         get() = FragmentLoginBinding::inflate
 
+    private var backPressedTimestamp: Long = 0L
+
     override fun prepareView(savedInstanceState: Bundle?) {
         setListeners()
+        initBackPressedCallback()
     }
 
     override fun renderState(state: LoginState) {
+        Log.d("StateBug", "renderState: ${state.viewState}")
         when (state.viewState) {
             ViewState.Idle -> {
                 showLoginIdle()
@@ -33,6 +41,8 @@ class LoginFragment :
             }
             ViewState.Success -> {
                 showLoginSuccess()
+                val action = LoginFragmentDirections.actionLoginFragmentToMainFragment()
+                findNavController().navigate(action)
             }
             ViewState.Error -> {
                 showLoginError()
@@ -88,5 +98,25 @@ class LoginFragment :
 
     private fun showLoginError() = with(binding) {
         dismissProgressDialog()
+    }
+
+    private fun initBackPressedCallback() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (backPressedTimestamp + TIME_INTERVAL > System.currentTimeMillis()) {
+                isEnabled = false
+                requireActivity().onBackPressed()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Press back again to exit",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            backPressedTimestamp = System.currentTimeMillis()
+        }
+    }
+
+    companion object {
+        private const val TIME_INTERVAL = 2000
     }
 }

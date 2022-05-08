@@ -4,6 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import eu.tutorials.myshoppal.data.local.data_source.login.LoginLocalDataSource
+import eu.tutorials.myshoppal.data.local.data_source.login.LoginLocalDataSourceImpl
+import eu.tutorials.myshoppal.data.local.data_source.main.MainLocalDataSource
+import eu.tutorials.myshoppal.data.local.data_source.main.MainLocalDataSourceImpl
 import eu.tutorials.myshoppal.data.remote.data_source.login.LoginRemoteDataSource
 import eu.tutorials.myshoppal.data.remote.data_source.login.LoginRemoteDataSourceImpl
 import eu.tutorials.myshoppal.data.remote.data_source.recover.RecoverRemoteDataSource
@@ -26,7 +30,15 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
+    abstract fun provideLoginLocalDataSource(loginLocalDataSourceImpl: LoginLocalDataSourceImpl): LoginLocalDataSource
+
+    @Binds
+    @Singleton
     abstract fun provideRecoverRemoteDataSource(recoverRemoteDataSourceImpl: RecoverRemoteDataSourceImpl): RecoverRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun provideMainLocalDataSource(mainLocalDataSourceImpl: MainLocalDataSourceImpl): MainLocalDataSource
 
     @Binds
     @Singleton
@@ -39,4 +51,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideRecoverRepository(recoverRepositoryImpl: RecoverRepositoryImpl): RecoverRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideMainRepository(mainRepositoryImpl: MainRepositoryImpl): MainRepository
+
+
 }

@@ -14,6 +14,7 @@ sealed class ViewState {
 
 sealed class LoginEvent : UiEvent {
     data class OnLogin(val loginUser: LoginUser) : LoginEvent()
+    object OnLoggedIn : LoginEvent()
 }
 
 sealed class LoginEffect : UiEffect {

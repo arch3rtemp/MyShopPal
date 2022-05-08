@@ -9,8 +9,8 @@ import javax.inject.Inject
 class RegisterRepositoryImpl @Inject constructor(
     private val registerRemoteDataSource: RegisterRemoteDataSource
 ) : RegisterRepository {
-    override fun registerUser(user: UserRegisterModel) = flow {
-        emit(registerRemoteDataSource.registerUser(user))
+    override fun createUser(user: UserRegisterModel) = flow {
+        emit(registerRemoteDataSource.createUser(user))
     }
 
     override fun saveUser(user: UserModel) = flow {

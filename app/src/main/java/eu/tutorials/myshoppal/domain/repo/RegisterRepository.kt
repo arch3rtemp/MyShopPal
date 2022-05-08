@@ -5,6 +5,6 @@ import eu.tutorials.myshoppal.domain.model.UserRegisterModel
 import kotlinx.coroutines.flow.Flow
 
 interface RegisterRepository {
-    fun registerUser(user: UserRegisterModel): Flow<UserModel>
+    fun createUser(user: UserRegisterModel): Flow<UserModel>
     fun saveUser(user: UserModel): Flow<Unit>
 }

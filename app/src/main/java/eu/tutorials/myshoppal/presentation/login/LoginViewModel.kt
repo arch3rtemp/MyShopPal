@@ -26,19 +26,25 @@ class LoginViewModel @Inject constructor(
             is LoginEvent.OnLogin -> {
                 loginUser(event.loginUser)
             }
+            is LoginEvent.OnLoggedIn -> {
+                loggedIn()
+            }
         }
     }
 
     private fun setStateError(message: String) {
-        setState { copy(
-            viewState = ViewState.Error
-        ) }
+        setState {
+            copy(
+                viewState = ViewState.Error
+            )
+        }
         setEffect { LoginEffect.Error(message) }
     }
 
     private fun setStateSuccess(message: String) {
         setState { copy(viewState = ViewState.Success) }
         setEffect { LoginEffect.Success(message) }
+
     }
 
     private fun loginUser(loginUser: LoginUser) {
@@ -47,7 +53,10 @@ class LoginViewModel @Inject constructor(
                 loginUseCase(loginUser.toUserLoginModel())
                     .onStart { setState { copy(viewState = ViewState.Loading) } }
                     .catch { setStateError(it.message.toString()) }
-                    .collect { setStateSuccess("Logged in successfully.") }
+                    .collect {
+                        setStateSuccess("Logged in successfully.")
+                        setState { copy(viewState = ViewState.Idle) }
+                    }
             }
         }
     }
@@ -55,11 +64,11 @@ class LoginViewModel @Inject constructor(
     private fun validateLoginDetails(loginUser: LoginUser): Boolean {
         loginUser.apply {
             return when {
-                TextUtils.isEmpty(email.trim { it <= ' '}) -> {
+                TextUtils.isEmpty(email.trim { it <= ' ' }) -> {
                     setStateError("Please enter an email id.")
                     false
                 }
-                TextUtils.isEmpty(password.trim { it <= ' '}) -> {
+                TextUtils.isEmpty(password.trim { it <= ' ' }) -> {
                     setStateError("Please enter a password.")
                     false
                 }
@@ -68,5 +77,9 @@ class LoginViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun loggedIn() {
+        setState { copy(viewState = ViewState.Idle) }
     }
 }

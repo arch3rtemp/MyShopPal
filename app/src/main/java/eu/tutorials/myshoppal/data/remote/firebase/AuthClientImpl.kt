@@ -27,7 +27,7 @@ class AuthClientImpl @Inject constructor(
             .await()
     }
 
-    override suspend fun loginUser(user: UserLoginDataModel) {
+    override suspend fun signInUser(user: UserLoginDataModel) {
         auth.signInWithEmailAndPassword(user.email, user.password)
             .await()
     }

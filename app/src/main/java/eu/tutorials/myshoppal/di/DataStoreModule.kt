@@ -6,8 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import eu.tutorials.myshoppal.data.local.data_store.PreferencesDataStore
-import eu.tutorials.myshoppal.data.local.data_store.PreferencesDataStoreImpl
+import eu.tutorials.myshoppal.data.local.data_store.DataStoreClient
+import eu.tutorials.myshoppal.data.local.data_store.DataStoreClientImpl
 import javax.inject.Singleton
 
 @Module
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 object DataStoreModule {
     @Provides
     @Singleton
-    fun provideDataStorePreferencesInstance(@ApplicationContext context: Context): PreferencesDataStore {
-        return PreferencesDataStoreImpl(context)
+    fun provideDataStorePreferencesInstance(@ApplicationContext context: Context): DataStoreClient {
+        return DataStoreClientImpl(context)
     }
 }

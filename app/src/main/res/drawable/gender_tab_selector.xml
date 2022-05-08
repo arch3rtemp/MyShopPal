@@ -4,7 +4,12 @@
     <item android:state_checked="true">
         <shape android:shape="rectangle">
 
-            <solid android:color="@color/colorAccent"/>
+            <gradient
+                android:angle="360"
+                android:startColor="@color/colorThemeOrange"
+                android:endColor="@color/colorThemePink"
+                android:type="linear"/>
+            <corners android:radius="@dimen/button_background_radius"/>
 
             <corners android:bottomLeftRadius="@dimen/profile_radio_button_radius"
                 android:bottomRightRadius="@dimen/profile_radio_button_radius"

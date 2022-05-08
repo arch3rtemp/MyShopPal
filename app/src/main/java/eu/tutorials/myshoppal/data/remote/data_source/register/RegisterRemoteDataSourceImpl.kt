@@ -13,7 +13,7 @@ class RegisterRemoteDataSourceImpl @Inject constructor(
     private val authClient: AuthClient,
     private val firestore: FirestoreClient
 ) : RegisterRemoteDataSource {
-    override suspend fun registerUser(user: UserRegisterModel): UserModel {
+    override suspend fun createUser(user: UserRegisterModel): UserModel {
         var userModel = UserModel()
         authClient.createUser(user.toUserRegisterDataModel()) {
             userModel = it.toUserModel()
