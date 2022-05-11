@@ -29,7 +29,7 @@ class MainFragment :
         when (state.viewState) {
             ViewState.Idle -> { showMainIdle() }
             ViewState.Loading -> { showMainLoading() }
-            ViewState.Success -> { showMainSuccess(state.name) }
+            ViewState.Success -> { showMainSuccess("${state.user.firstName} ${state.user.lastName}") }
             ViewState.Error -> { showMainError() }
         }
     }

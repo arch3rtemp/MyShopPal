@@ -1,7 +1,6 @@
 package eu.tutorials.myshoppal.presentation.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -11,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import eu.tutorials.myshoppal.R
 import eu.tutorials.myshoppal.databinding.FragmentLoginBinding
+import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.presentation.base.BaseFragment
 import eu.tutorials.myshoppal.presentation.model.LoginUser
 import eu.tutorials.myshoppal.utils.showSnackbar
@@ -31,7 +31,6 @@ class LoginFragment :
     }
 
     override fun renderState(state: LoginState) {
-        Log.d("StateBug", "renderState: ${state.viewState}")
         when (state.viewState) {
             ViewState.Idle -> {
                 showLoginIdle()
@@ -41,8 +40,7 @@ class LoginFragment :
             }
             ViewState.Success -> {
                 showLoginSuccess()
-                val action = LoginFragmentDirections.actionLoginFragmentToMainFragment()
-                findNavController().navigate(action)
+                checkUserProfile(state.user)
             }
             ViewState.Error -> {
                 showLoginError()
@@ -82,6 +80,16 @@ class LoginFragment :
             email = etEmail.text.toString(),
             password = etPassword.text.toString()
         )
+    }
+
+    private fun checkUserProfile(user: UserModel) {
+        if (user.profileCompleted == 0) {
+            val action = LoginFragmentDirections.actionLoginFragmentToProfileFragment()
+            findNavController().navigate(action)
+        } else {
+            val action = LoginFragmentDirections.actionLoginFragmentToMainFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun showLoginIdle() = with(binding) {

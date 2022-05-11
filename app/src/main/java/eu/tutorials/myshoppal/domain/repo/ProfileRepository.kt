@@ -1,8 +1,8 @@
-package eu.tutorials.myshoppal.data.local.data_source.main
+package eu.tutorials.myshoppal.domain.repo
 
 import eu.tutorials.myshoppal.domain.model.UserModel
 import kotlinx.coroutines.flow.Flow
 
-interface MainLocalDataSource {
+interface ProfileRepository {
     fun loadFromDisk(): Flow<UserModel>
 }

@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import eu.tutorials.myshoppal.R
+import kotlinx.coroutines.launch
 
 abstract class BaseFragment<Event : UiEvent, State : UiState, Effect : UiEffect, VB : ViewBinding, VM : BaseViewModel<Event, State, Effect>>
     : Fragment() {
@@ -33,33 +36,22 @@ abstract class BaseFragment<Event : UiEvent, State : UiState, Effect : UiEffect,
         return requireNotNull(_binding).root
     }
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.uiState.collect {
-//                renderState(it)
-//            }
-//        }
-//
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.effect.collect {
-//                renderEffect(it)
-//            }
-//        }
-//    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.uiState.collect {
-                renderState(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    renderState(it)
+                }
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.effect.collect {
-                renderEffect(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effect.collect {
+                    renderEffect(it)
+                }
             }
         }
 

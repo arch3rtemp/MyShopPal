@@ -5,14 +5,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import eu.tutorials.myshoppal.domain.repo.LoginRepository
-import eu.tutorials.myshoppal.domain.repo.MainRepository
-import eu.tutorials.myshoppal.domain.repo.RecoverRepository
-import eu.tutorials.myshoppal.domain.repo.RegisterRepository
+import eu.tutorials.myshoppal.domain.repo.*
 import eu.tutorials.myshoppal.domain.use_case.login.AuthUseCase
 import eu.tutorials.myshoppal.domain.use_case.login.RetrieveUserUseCase
 import eu.tutorials.myshoppal.domain.use_case.login.SaveUserToDiskUseCase
-import eu.tutorials.myshoppal.domain.use_case.main.LoadUserFromDiskUseCase
+import eu.tutorials.myshoppal.domain.use_case.profile.LoadUserFromDiskUseCase
 import eu.tutorials.myshoppal.domain.use_case.recover.RecoverUseCase
 import eu.tutorials.myshoppal.domain.use_case.register.CreateUserUseCase
 import eu.tutorials.myshoppal.domain.use_case.register.SaveUserUseCase
@@ -60,7 +57,13 @@ object UseCaseModule {
 
     @Provides
     @ViewModelScoped
-    fun provideLoadUserFromDiskUseCase(mainRepository: MainRepository): LoadUserFromDiskUseCase {
-        return LoadUserFromDiskUseCase(mainRepository, Dispatchers.IO)
+    fun provideLoadUserFromDiskMainUseCase(mainRepository: MainRepository): eu.tutorials.myshoppal.domain.use_case.main.LoadUserFromDiskUseCase {
+        return eu.tutorials.myshoppal.domain.use_case.main.LoadUserFromDiskUseCase(mainRepository, Dispatchers.IO)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideLoadUserFromDiskUseCase(profileRepository: ProfileRepository): LoadUserFromDiskUseCase {
+        return LoadUserFromDiskUseCase(profileRepository, Dispatchers.IO)
     }
 }

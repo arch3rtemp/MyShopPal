@@ -1,5 +1,9 @@
 package eu.tutorials.myshoppal.data.remote.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class UserDataModel(
     val id : String = "",
     val firstName : String = "",
@@ -9,4 +13,4 @@ data class UserDataModel(
     val mobile : Long = 0,
     val gender : String = "",
     val profileCompleted : Int = 0
-)
+) : Parcelable

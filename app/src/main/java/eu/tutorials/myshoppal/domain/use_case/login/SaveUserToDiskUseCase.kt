@@ -1,5 +1,6 @@
 package eu.tutorials.myshoppal.domain.use_case.login
 
+import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.domain.repo.LoginRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +11,7 @@ class SaveUserToDiskUseCase @Inject constructor(
     private val loginRepository: LoginRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
-    operator fun invoke(firstName: String, lastName: String): Flow<Unit> {
-        return loginRepository.saveToDisk(firstName, lastName).flowOn(dispatcher)
+    operator fun invoke(user: UserModel): Flow<Unit> {
+        return loginRepository.saveToDisk(user).flowOn(dispatcher)
     }
 }

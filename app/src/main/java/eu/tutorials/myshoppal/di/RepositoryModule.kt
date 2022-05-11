@@ -8,6 +8,8 @@ import eu.tutorials.myshoppal.data.local.data_source.login.LoginLocalDataSource
 import eu.tutorials.myshoppal.data.local.data_source.login.LoginLocalDataSourceImpl
 import eu.tutorials.myshoppal.data.local.data_source.main.MainLocalDataSource
 import eu.tutorials.myshoppal.data.local.data_source.main.MainLocalDataSourceImpl
+import eu.tutorials.myshoppal.data.local.data_source.profile.ProfileLocalDataSource
+import eu.tutorials.myshoppal.data.local.data_source.profile.ProfileLocalDataSourceImpl
 import eu.tutorials.myshoppal.data.remote.data_source.login.LoginRemoteDataSource
 import eu.tutorials.myshoppal.data.remote.data_source.login.LoginRemoteDataSourceImpl
 import eu.tutorials.myshoppal.data.remote.data_source.recover.RecoverRemoteDataSource
@@ -38,6 +40,10 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
+    abstract fun provideProfileLocalDataSource(profileLocalDataSourceImpl: ProfileLocalDataSourceImpl): ProfileLocalDataSource
+
+    @Binds
+    @Singleton
     abstract fun provideMainLocalDataSource(mainLocalDataSourceImpl: MainLocalDataSourceImpl): MainLocalDataSource
 
     @Binds
@@ -56,5 +62,8 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun provideMainRepository(mainRepositoryImpl: MainRepositoryImpl): MainRepository
 
+    @Binds
+    @Singleton
+    abstract fun provideProfileRepository(profileRepositoryImpl: ProfileRepositoryImpl): ProfileRepository
 
 }

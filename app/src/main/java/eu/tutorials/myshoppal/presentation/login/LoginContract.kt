@@ -1,5 +1,6 @@
 package eu.tutorials.myshoppal.presentation.login
 
+import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.presentation.base.UiEffect
 import eu.tutorials.myshoppal.presentation.base.UiEvent
 import eu.tutorials.myshoppal.presentation.base.UiState
@@ -22,4 +23,4 @@ sealed class LoginEffect : UiEffect {
     data class Error(val message: String) : LoginEffect()
 }
 
-data class LoginState(val viewState: ViewState) : UiState
+data class LoginState(val viewState: ViewState, val user: UserModel = UserModel.Empty) : UiState

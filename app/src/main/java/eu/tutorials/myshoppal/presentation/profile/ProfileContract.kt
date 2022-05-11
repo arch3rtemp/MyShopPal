@@ -1,10 +1,9 @@
-package eu.tutorials.myshoppal.presentation.main
+package eu.tutorials.myshoppal.presentation.profile
 
 import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.presentation.base.UiEffect
 import eu.tutorials.myshoppal.presentation.base.UiEvent
 import eu.tutorials.myshoppal.presentation.base.UiState
-
 
 sealed class ViewState {
     object Idle : ViewState()
@@ -13,16 +12,17 @@ sealed class ViewState {
     object Error : ViewState()
 }
 
-sealed class MainEvent : UiEvent {
-    object OnUserLoaded : MainEvent()
+sealed class ProfileEvent : UiEvent {
+    object OnLoadUser: ProfileEvent()
+    object OnUserEdited : ProfileEvent()
 }
 
-sealed class MainEffect : UiEffect {
-    data class Success(val message: String) : MainEffect()
-    data class Error(val message: String) : MainEffect()
+sealed class ProfileEffect : UiEffect {
+    data class Success(val message: String) : ProfileEffect()
+    data class Error(val message: String) : ProfileEffect()
 }
 
-data class MainState(
+data class ProfileState(
     val viewState: ViewState,
     val user: UserModel = UserModel.Empty
 ) : UiState

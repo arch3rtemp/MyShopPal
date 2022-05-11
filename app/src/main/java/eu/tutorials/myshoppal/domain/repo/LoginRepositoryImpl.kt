@@ -20,7 +20,7 @@ class LoginRepositoryImpl @Inject constructor(
         emit(loginRemoteDataSource.retrieveUser())
     }
 
-    override fun saveToDisk(firstName: String, lastName: String) = flow<Unit> {
-        emit(loginLocalDataSource.saveToDisk(firstName, lastName))
+    override fun saveToDisk(user: UserModel) = flow<Unit> {
+        emit(loginLocalDataSource.saveToDisk(user))
     }
 }

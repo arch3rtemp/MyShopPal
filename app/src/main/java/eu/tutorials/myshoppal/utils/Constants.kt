@@ -26,6 +26,7 @@ object Constants {
 
     const val FIRST_NAME : String = "firstName"
     const val LAST_NAME : String = "lastName"
+    const val EMAIL : String = "email"
 
     const val GENDER: String = "gender"
     const val MOBILE: String = "mobile"

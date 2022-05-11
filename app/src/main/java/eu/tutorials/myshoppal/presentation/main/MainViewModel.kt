@@ -39,7 +39,7 @@ class MainViewModel @Inject constructor(
             loadUserFromDiskUseCase()
                 .onStart { setState { copy(viewState = ViewState.Loading) } }
                 .catch { setStateError(it.message.toString()) }
-                .collect { setState { copy(viewState = ViewState.Success, name = it) } }
+                .collect { setState { copy(viewState = ViewState.Success, user = it) } }
         }
     }
 }
