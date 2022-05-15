@@ -12,6 +12,8 @@ import eu.tutorials.myshoppal.data.local.data_source.profile.ProfileLocalDataSou
 import eu.tutorials.myshoppal.data.local.data_source.profile.ProfileLocalDataSourceImpl
 import eu.tutorials.myshoppal.data.remote.data_source.login.LoginRemoteDataSource
 import eu.tutorials.myshoppal.data.remote.data_source.login.LoginRemoteDataSourceImpl
+import eu.tutorials.myshoppal.data.remote.data_source.profile.ProfileRemoteDataSource
+import eu.tutorials.myshoppal.data.remote.data_source.profile.ProfileRemoteDataSourceImpl
 import eu.tutorials.myshoppal.data.remote.data_source.recover.RecoverRemoteDataSource
 import eu.tutorials.myshoppal.data.remote.data_source.recover.RecoverRemoteDataSourceImpl
 import eu.tutorials.myshoppal.data.remote.data_source.register.RegisterRemoteDataSource
@@ -41,6 +43,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideProfileLocalDataSource(profileLocalDataSourceImpl: ProfileLocalDataSourceImpl): ProfileLocalDataSource
+
+    @Binds
+    @Singleton
+    abstract fun provideProfileRemoteDataSource(profileRemoteDataSource: ProfileRemoteDataSourceImpl): ProfileRemoteDataSource
 
     @Binds
     @Singleton

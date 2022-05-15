@@ -11,11 +11,18 @@ class FirestoreClientImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : FirestoreClient {
 
-    override suspend fun saveUser(user: UserDataModel) {
+    override suspend fun createUser(user: UserDataModel) {
 
         firestore.collection(Constants.USERS)
             .document(user.id)
             .set(user, SetOptions.merge())
+            .await()
+    }
+
+    override suspend fun updateUser(id: String, userHashMap: HashMap<String, Any>) {
+        firestore.collection(Constants.USERS)
+            .document(id)
+            .update(userHashMap)
             .await()
     }
 

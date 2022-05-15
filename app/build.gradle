@@ -66,6 +66,9 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1'
 
+    // Coil
+    implementation("io.coil-kt:coil:2.0.0")
+
 
 //    // Libraries for Retrofit
 //    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -82,10 +85,14 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     // SplashScreen
     implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
 
     // Preferences Datastore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    // Facebook shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
 }

@@ -22,6 +22,6 @@ class RegisterRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun saveUser(user: UserModel) {
-        firestore.saveUser(user.toUserDataModel())
+        firestore.createUser(user.toUserDataModel())
     }
 }

@@ -1,5 +1,7 @@
 package eu.tutorials.myshoppal.utils
 
+import android.net.Uri
+import android.webkit.MimeTypeMap
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
@@ -16,4 +18,8 @@ fun Fragment.showSnackbar(message: String, error: Boolean) {
         view.setBackgroundColor(ContextCompat.getColor(requireActivity(), color))
         show()
     }
+}
+
+fun Fragment.getFileExtension(uri: Uri?): String? {
+    return MimeTypeMap.getSingleton().getExtensionFromMimeType(requireActivity().contentResolver.getType(uri!!))
 }

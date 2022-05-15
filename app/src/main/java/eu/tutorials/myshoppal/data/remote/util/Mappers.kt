@@ -44,7 +44,7 @@ fun UserModel.toUserDataModel(): UserDataModel {
         email = email,
         image = image,
         mobile = mobile,
-        gender = gender,
+        sex = sex,
         profileCompleted = profileCompleted
     )
 }
@@ -57,7 +57,7 @@ fun UserDataModel.toUserModel(): UserModel {
         email = email,
         image = image,
         mobile = mobile,
-        gender = gender,
+        sex = sex,
         profileCompleted = profileCompleted
     )
 }

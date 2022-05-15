@@ -2,14 +2,12 @@ package eu.tutorials.myshoppal.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import eu.tutorials.myshoppal.data.remote.firebase.AuthClient
-import eu.tutorials.myshoppal.data.remote.firebase.AuthClientImpl
-import eu.tutorials.myshoppal.data.remote.firebase.FirestoreClient
-import eu.tutorials.myshoppal.data.remote.firebase.FirestoreClientImpl
+import eu.tutorials.myshoppal.data.remote.firebase.*
 import javax.inject.Singleton
 
 @Module
@@ -30,6 +28,12 @@ object FirebaseModule {
 
     @Provides
     @Singleton
+    fun provideFirebaseStorageInstance(): FirebaseStorage {
+        return FirebaseStorage.getInstance()
+    }
+
+    @Provides
+    @Singleton
     fun provideAuthClient(firebaseAuth: FirebaseAuth): AuthClient {
         return AuthClientImpl(firebaseAuth)
     }
@@ -38,5 +42,11 @@ object FirebaseModule {
     @Singleton
     fun provideFirestoreClient(firestore: FirebaseFirestore): FirestoreClient {
         return FirestoreClientImpl(firestore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStorageClient(firebaseStorage: FirebaseStorage): StorageClient {
+        return StorageClientImpl(firebaseStorage)
     }
 }

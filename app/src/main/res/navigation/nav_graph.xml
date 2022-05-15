@@ -6,9 +6,11 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <include app:graph="@navigation/mobile_navigation" />
+
     <fragment
         android:id="@+id/loginFragment"
-        android:name="eu.tutorials.myshoppal.presentation.login.LoginFragment"
+        android:name="eu.tutorials.myshoppal.presentation.main.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -25,36 +27,49 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
         <action
-            android:id="@+id/action_loginFragment_to_mainFragment"
-            app:destination="@id/mainFragment"
+            android:id="@+id/action_loginFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_loginFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_loginFragment_to_dashboardActivity"
+            app:destination="@id/dashboardActivity"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="eu.tutorials.myshoppal.presentation.register.RegisterFragment"
+        android:name="eu.tutorials.myshoppal.presentation.main.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
     </fragment>
     <fragment
         android:id="@+id/recoverFragment"
-        android:name="eu.tutorials.myshoppal.presentation.recover.RecoverFragment"
+        android:name="eu.tutorials.myshoppal.presentation.main.recover.RecoverFragment"
         android:label="fragment_recover"
         tools:layout="@layout/fragment_recover" />
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="eu.tutorials.myshoppal.presentation.main.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
-    <fragment
         android:id="@+id/profileFragment"
-        android:name="eu.tutorials.myshoppal.presentation.profile.ProfileFragment"
+        android:name="eu.tutorials.myshoppal.presentation.main.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_dashboardActivity"
+            app:destination="@id/dashboardActivity"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <activity
+        android:id="@+id/dashboardActivity"
+        android:name="eu.tutorials.myshoppal.presentation.dashboard.DashboardActivity"
+        android:label="activity_dashboard"
+        tools:layout="@layout/activity_dashboard" />
 </navigation>

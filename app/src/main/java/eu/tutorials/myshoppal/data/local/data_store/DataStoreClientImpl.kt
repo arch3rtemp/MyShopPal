@@ -24,7 +24,7 @@ class DataStoreClientImpl @Inject constructor(
             it[userEmail] = user.email
             it[userImage] = user.image
             it[userMobile] = user.mobile
-            it[userGender] = user.gender
+            it[userSex] = user.sex
             it[userProfileCompleted] = user.profileCompleted
         }
     }
@@ -37,7 +37,7 @@ class DataStoreClientImpl @Inject constructor(
             it[userEmail] ?: "",
             it[userImage] ?: "",
             it[userMobile] ?: 0L,
-            it[userGender] ?: "",
+            it[userSex] ?: "",
             it[userProfileCompleted] ?: 0
         )
     }
@@ -49,7 +49,7 @@ class DataStoreClientImpl @Inject constructor(
         val userEmail = stringPreferencesKey(Constants.EMAIL)
         val userImage = stringPreferencesKey(Constants.IMAGE)
         val userMobile = longPreferencesKey(Constants.MOBILE)
-        val userGender = stringPreferencesKey(Constants.GENDER)
+        val userSex = stringPreferencesKey(Constants.GENDER)
         val userProfileCompleted = intPreferencesKey(Constants.PROFILE_COMPLETED)
     }
 }

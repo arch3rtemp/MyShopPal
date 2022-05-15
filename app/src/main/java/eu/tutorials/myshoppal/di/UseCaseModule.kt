@@ -8,11 +8,14 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import eu.tutorials.myshoppal.domain.repo.*
 import eu.tutorials.myshoppal.domain.use_case.login.AuthUseCase
 import eu.tutorials.myshoppal.domain.use_case.login.RetrieveUserUseCase
-import eu.tutorials.myshoppal.domain.use_case.login.SaveUserToDiskUseCase
-import eu.tutorials.myshoppal.domain.use_case.profile.LoadUserFromDiskUseCase
+import eu.tutorials.myshoppal.domain.use_case.login.SaveUserDiskUseCase
+import eu.tutorials.myshoppal.domain.use_case.main.MainLoadUserDiskUseCase
+import eu.tutorials.myshoppal.domain.use_case.profile.ProfileLoadUserDiskUseCase
+import eu.tutorials.myshoppal.domain.use_case.profile.ProfileUpdateUserUseCase
+import eu.tutorials.myshoppal.domain.use_case.profile.ProfileUploadImageUseCase
 import eu.tutorials.myshoppal.domain.use_case.recover.RecoverUseCase
 import eu.tutorials.myshoppal.domain.use_case.register.CreateUserUseCase
-import eu.tutorials.myshoppal.domain.use_case.register.SaveUserUseCase
+import eu.tutorials.myshoppal.domain.use_case.register.RegisterSaveUserUseCase
 import kotlinx.coroutines.Dispatchers
 
 @Module
@@ -27,13 +30,13 @@ object UseCaseModule {
 
     @Provides
     @ViewModelScoped
-    fun provideSaveUserUseCase(registerRepository: RegisterRepository): SaveUserUseCase {
-        return SaveUserUseCase(registerRepository, Dispatchers.IO)
+    fun provideRegisterSaveUserUseCase(registerRepository: RegisterRepository): RegisterSaveUserUseCase {
+        return RegisterSaveUserUseCase(registerRepository, Dispatchers.IO)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideLoginUseCase(loginRepository: LoginRepository): AuthUseCase {
+    fun provideAuthUseCase(loginRepository: LoginRepository): AuthUseCase {
         return AuthUseCase(loginRepository, Dispatchers.IO)
     }
 
@@ -51,19 +54,31 @@ object UseCaseModule {
 
     @Provides
     @ViewModelScoped
-    fun provideSaveUserToDiskUseCase(loginRepository: LoginRepository): SaveUserToDiskUseCase {
-        return SaveUserToDiskUseCase(loginRepository, Dispatchers.IO)
+    fun provideSaveUserDiskUseCase(loginRepository: LoginRepository): SaveUserDiskUseCase {
+        return SaveUserDiskUseCase(loginRepository, Dispatchers.IO)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideLoadUserFromDiskMainUseCase(mainRepository: MainRepository): eu.tutorials.myshoppal.domain.use_case.main.LoadUserFromDiskUseCase {
-        return eu.tutorials.myshoppal.domain.use_case.main.LoadUserFromDiskUseCase(mainRepository, Dispatchers.IO)
+    fun provideMainLoadUserDiskUseCase(mainRepository: MainRepository): MainLoadUserDiskUseCase {
+        return MainLoadUserDiskUseCase(mainRepository, Dispatchers.IO)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideLoadUserFromDiskUseCase(profileRepository: ProfileRepository): LoadUserFromDiskUseCase {
-        return LoadUserFromDiskUseCase(profileRepository, Dispatchers.IO)
+    fun provideProfileLoadUserDiskUseCase(profileRepository: ProfileRepository): ProfileLoadUserDiskUseCase {
+        return ProfileLoadUserDiskUseCase(profileRepository, Dispatchers.IO)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideProfileSaveUserUseCase(profileRepository: ProfileRepository): ProfileUpdateUserUseCase {
+        return ProfileUpdateUserUseCase(profileRepository, Dispatchers.IO)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideProfileUploadImageUseCase(profileRepository: ProfileRepository): ProfileUploadImageUseCase {
+        return ProfileUploadImageUseCase(profileRepository, Dispatchers.IO)
     }
 }

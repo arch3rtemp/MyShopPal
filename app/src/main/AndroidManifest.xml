@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
     <application
         android:name=".ShopPalApplication"
         android:allowBackup="true"
@@ -10,9 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Splash">
         <activity
-            android:name=".presentation.MainActivity"
-            android:theme="@style/Theme.Splash"
-            android:exported="true">
+            android:name=".presentation.dashboard.DashboardActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Dashboard"/>
+        <activity
+            android:name=".presentation.main.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
