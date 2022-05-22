@@ -29,6 +29,27 @@ class DataStoreClientImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateUserToDataStore(userHashMap: HashMap<String, Any>) {
+        context.dataStore.edit {
+            val mobile = userHashMap[Constants.MOBILE]
+            if (mobile is Long) {
+                it[userMobile] = mobile
+            }
+            val sex = userHashMap[Constants.SEX]
+            if (sex is String) {
+                it[userSex] = sex
+            }
+            val profileCompleted = userHashMap[Constants.PROFILE_COMPLETED]
+            if (profileCompleted is Int) {
+                it[userProfileCompleted] = profileCompleted
+            }
+            val imageUrl = userHashMap[Constants.IMAGE]
+            if (imageUrl is String) {
+                it[userImage] = imageUrl
+            }
+        }
+    }
+
     override fun loadUserFromDataStore() = context.dataStore.data.map {
         UserDataModel(
             it[userId] ?: "",
@@ -42,6 +63,12 @@ class DataStoreClientImpl @Inject constructor(
         )
     }
 
+    override suspend fun clearUser() {
+        context.dataStore.edit {
+            it.clear()
+        }
+    }
+
     companion object {
         val userId = stringPreferencesKey(Constants.USER_ID)
         val userFirstName = stringPreferencesKey(Constants.FIRST_NAME)
@@ -49,7 +76,7 @@ class DataStoreClientImpl @Inject constructor(
         val userEmail = stringPreferencesKey(Constants.EMAIL)
         val userImage = stringPreferencesKey(Constants.IMAGE)
         val userMobile = longPreferencesKey(Constants.MOBILE)
-        val userSex = stringPreferencesKey(Constants.GENDER)
+        val userSex = stringPreferencesKey(Constants.SEX)
         val userProfileCompleted = intPreferencesKey(Constants.PROFILE_COMPLETED)
     }
 }

@@ -21,6 +21,7 @@ sealed class LoginEvent : UiEvent {
 sealed class LoginEffect : UiEffect {
     data class Success(val message: String) : LoginEffect()
     data class Error(val message: String) : LoginEffect()
+    object Finish : LoginEffect()
 }
 
 data class LoginState(val viewState: ViewState, val user: UserModel = UserModel.Empty) : UiState

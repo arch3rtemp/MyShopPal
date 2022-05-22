@@ -6,16 +6,21 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import eu.tutorials.myshoppal.domain.repo.*
+import eu.tutorials.myshoppal.domain.use_case.intro.RetrieveFirebaseUserUseCase
 import eu.tutorials.myshoppal.domain.use_case.login.AuthUseCase
 import eu.tutorials.myshoppal.domain.use_case.login.RetrieveUserUseCase
 import eu.tutorials.myshoppal.domain.use_case.login.SaveUserDiskUseCase
 import eu.tutorials.myshoppal.domain.use_case.main.MainLoadUserDiskUseCase
 import eu.tutorials.myshoppal.domain.use_case.profile.ProfileLoadUserDiskUseCase
+import eu.tutorials.myshoppal.domain.use_case.profile.ProfileSaveUserDiskUseCase
 import eu.tutorials.myshoppal.domain.use_case.profile.ProfileUpdateUserUseCase
 import eu.tutorials.myshoppal.domain.use_case.profile.ProfileUploadImageUseCase
 import eu.tutorials.myshoppal.domain.use_case.recover.RecoverUseCase
 import eu.tutorials.myshoppal.domain.use_case.register.CreateUserUseCase
 import eu.tutorials.myshoppal.domain.use_case.register.RegisterSaveUserUseCase
+import eu.tutorials.myshoppal.domain.use_case.settings.SettingsClearUserUseCase
+import eu.tutorials.myshoppal.domain.use_case.settings.SettingsLoadUserDiskUseCase
+import eu.tutorials.myshoppal.domain.use_case.settings.SettingsSignOutUseCase
 import kotlinx.coroutines.Dispatchers
 
 @Module
@@ -80,5 +85,35 @@ object UseCaseModule {
     @ViewModelScoped
     fun provideProfileUploadImageUseCase(profileRepository: ProfileRepository): ProfileUploadImageUseCase {
         return ProfileUploadImageUseCase(profileRepository, Dispatchers.IO)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideIntroRetrieveFirebaseUserUseCase(introRepository: IntroRepository): RetrieveFirebaseUserUseCase {
+        return RetrieveFirebaseUserUseCase(introRepository, Dispatchers.IO)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSettingsClearUserUseCase(settingsRepository: SettingsRepository): SettingsClearUserUseCase {
+        return SettingsClearUserUseCase(settingsRepository, Dispatchers.IO)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSettingsLoadUserUseCase(settingsRepository: SettingsRepository): SettingsLoadUserDiskUseCase {
+        return SettingsLoadUserDiskUseCase(settingsRepository, Dispatchers.IO)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSettingsSignOutUseCase(settingsRepository: SettingsRepository): SettingsSignOutUseCase {
+        return SettingsSignOutUseCase(settingsRepository, Dispatchers.IO)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideProfileSaveUserDiskUseCase(profileRepository: ProfileRepository): ProfileSaveUserDiskUseCase {
+        return ProfileSaveUserDiskUseCase(profileRepository, Dispatchers.IO)
     }
 }

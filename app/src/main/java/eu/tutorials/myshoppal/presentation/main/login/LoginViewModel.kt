@@ -57,6 +57,7 @@ class LoginViewModel @Inject constructor(
                     .collect {
                         setStateSuccess("Logged in successfully.", it)
                         setState { copy(viewState = ViewState.Idle) }
+                        setEffect { LoginEffect.Finish }
                     }
             }
         }

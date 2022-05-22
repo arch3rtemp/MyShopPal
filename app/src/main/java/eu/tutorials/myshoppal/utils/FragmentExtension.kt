@@ -20,6 +20,6 @@ fun Fragment.showSnackbar(message: String, error: Boolean) {
     }
 }
 
-fun Fragment.getFileExtension(uri: Uri?): String? {
-    return MimeTypeMap.getSingleton().getExtensionFromMimeType(requireActivity().contentResolver.getType(uri!!))
+fun Fragment.getFileExtension(uri: Uri): String? {
+    return MimeTypeMap.getSingleton().getExtensionFromMimeType(requireActivity().contentResolver.getType(uri))
 }

@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import eu.tutorials.myshoppal.R
@@ -35,7 +36,7 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
 
     override val viewModel by viewModels<ProfileViewModel>()
 
-    private var selectedImageFileUri: Uri? = null
+    private var selectedImageFileUri: Uri = Uri.EMPTY
 
     private val requestPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -55,8 +56,8 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
         if (result.resultCode == RESULT_OK) {
             try {
                 result.data?.let {
-                    selectedImageFileUri = result.data?.data
-                    CoilLoader(requireContext()).loadUserPicture(selectedImageFileUri!!, binding.ivUserPhoto)
+                    selectedImageFileUri = result.data?.data ?: Uri.EMPTY
+                    CoilLoader(requireContext()).loadUserPicture(selectedImageFileUri, binding.ivUserPhoto)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -89,15 +90,25 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
     override fun renderEffect(effect: ProfileEffect) {
         when (effect) {
             is ProfileEffect.Error -> {
-                showSnackbar(effect.message, false)
-            }
-            is ProfileEffect.Success -> {
                 showSnackbar(effect.message, true)
             }
+            is ProfileEffect.Success -> {
+                showSnackbar(effect.message, false)
+            }
             ProfileEffect.Finish -> {
-                val action = ProfileFragmentDirections.actionProfileFragmentToDashboardActivity()
-                findNavController().navigate(action)
-                requireActivity().finish()
+                val options = NavOptions
+                    .Builder()
+                    .setEnterAnim(R.anim.slide_in_right)
+                    .setExitAnim(R.anim.slide_out_left)
+                    .setPopEnterAnim(R.anim.slide_in_left)
+                    .setPopExitAnim(R.anim.slide_out_right)
+                    .setPopUpTo(R.id.nav_graph_dashboard, true)
+                    .build()
+
+                findNavController().navigate(R.id.dashboardFragment, null, options)
+            }
+            ProfileEffect.Pop -> {
+                findNavController().popBackStack()
             }
         }
     }
@@ -115,7 +126,13 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
             rbFemale.setOnClickListener {  }
             btnSubmit.setOnClickListener {
                 val fileExtension = getFileExtension(selectedImageFileUri)
-                viewModel.setEvent(ProfileEvent.OnUserEdited(getDataFromFields(), selectedImageFileUri, fileExtension))
+                viewModel.setEvent(
+                    ProfileEvent.OnUserEdited(
+                        getDataFromFields(),
+                        selectedImageFileUri,
+                        fileExtension
+                    )
+                )
             }
         }
     }
@@ -128,7 +145,7 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
         }
         val userHashMap = HashMap<String, Any>()
         userHashMap[Constants.MOBILE] = etMobileNumber.text.toString()
-        userHashMap[Constants.GENDER] = sex
+        userHashMap[Constants.SEX] = sex
         userHashMap[Constants.PROFILE_COMPLETED] = 1
         return@with userHashMap
     }

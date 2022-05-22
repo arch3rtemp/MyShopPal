@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.tutorials.myshoppal.domain.use_case.profile.ProfileLoadUserDiskUseCase
 import eu.tutorials.myshoppal.domain.use_case.profile.ProfileUpdateUseCase
-import eu.tutorials.myshoppal.domain.use_case.profile.ProfileUpdateUserUseCase
-import eu.tutorials.myshoppal.domain.use_case.profile.ProfileUploadImageUseCase
 import eu.tutorials.myshoppal.presentation.base.BaseViewModel
 import eu.tutorials.myshoppal.utils.Constants
 import kotlinx.coroutines.flow.catch
@@ -19,12 +17,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val profileLoadUserDiskUseCase: ProfileLoadUserDiskUseCase,
-    private val profileUpdateUserUseCase: ProfileUpdateUserUseCase,
-    private val profileUploadImageUseCase: ProfileUploadImageUseCase,
     private val profileUpdateUseCase: ProfileUpdateUseCase
 ) : BaseViewModel<ProfileEvent, ProfileState, ProfileEffect>() {
 
     private var userId: String = ""
+    private var isCompleted: Int = -1
 
     override fun createInitialState(): ProfileState {
         return ProfileState(viewState = ViewState.Idle)
@@ -48,6 +45,7 @@ class ProfileViewModel @Inject constructor(
                 .catch { setStateError(it.message.toString()) }
                 .onEach {
                     userId = it.id
+                    isCompleted = it.profileCompleted
                     setState { copy(viewState = ViewState.Success, user = it) }
                 }
                 .collect {
@@ -66,7 +64,7 @@ class ProfileViewModel @Inject constructor(
                     .collect {
                         setStateSuccess("Updated successfully.")
                         setState { copy(viewState = ViewState.Idle) }
-                        setEffect { ProfileEffect.Finish }
+                        checkNavigation()
                     }
             }
         }
@@ -86,6 +84,14 @@ class ProfileViewModel @Inject constructor(
             else -> {
                 true
             }
+        }
+    }
+
+    private fun checkNavigation() {
+        if (isCompleted == 0) {
+            setEffect { ProfileEffect.Finish }
+        } else {
+            setEffect { ProfileEffect.Pop }
         }
     }
 

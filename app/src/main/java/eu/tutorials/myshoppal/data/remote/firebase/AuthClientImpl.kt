@@ -32,9 +32,17 @@ class AuthClientImpl @Inject constructor(
             .await()
     }
 
+    override suspend fun signOutUser() {
+        auth.signOut()
+    }
+
     override suspend fun recoverPassword(email: String) {
         auth.sendPasswordResetEmail(email)
             .await()
+    }
+
+    override suspend fun getCurrentUser(): FirebaseUser? {
+        return auth.currentUser
     }
 
     override fun getCurrentUserId(): String {

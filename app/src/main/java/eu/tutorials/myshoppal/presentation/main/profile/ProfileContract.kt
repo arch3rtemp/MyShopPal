@@ -21,6 +21,7 @@ sealed class ProfileEvent : UiEvent {
 sealed class ProfileEffect : UiEffect {
     data class Success(val message: String) : ProfileEffect()
     data class Error(val message: String) : ProfileEffect()
+    object Pop : ProfileEffect()
     object Finish : ProfileEffect()
 }
 

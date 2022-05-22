@@ -12,4 +12,7 @@ class ProfileLocalDataSourceImpl @Inject constructor(
     override fun loadFromDisk() = flow {
         emit(dataStoreClient.loadUserFromDataStore().first().toUserModel())
     }
+    override suspend fun updateToDisk(userHashMap: HashMap<String, Any>) = flow {
+        emit(dataStoreClient.updateUserToDataStore(userHashMap))
+    }
 }

@@ -3,14 +3,11 @@ package eu.tutorials.myshoppal.presentation.main.login
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import eu.tutorials.myshoppal.R
 import eu.tutorials.myshoppal.databinding.FragmentLoginBinding
-import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.presentation.base.BaseFragment
 import eu.tutorials.myshoppal.presentation.model.LoginUser
 import eu.tutorials.myshoppal.utils.showSnackbar
@@ -23,11 +20,8 @@ class LoginFragment :
     override val bindLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentLoginBinding
         get() = FragmentLoginBinding::inflate
 
-    private var backPressedTimestamp: Long = 0L
-
     override fun prepareView(savedInstanceState: Bundle?) {
         setListeners()
-        initBackPressedCallback()
     }
 
     override fun renderState(state: LoginState) {
@@ -40,7 +34,6 @@ class LoginFragment :
             }
             ViewState.Success -> {
                 showLoginSuccess()
-                checkUserProfile(state.user)
             }
             ViewState.Error -> {
                 showLoginError()
@@ -56,8 +49,24 @@ class LoginFragment :
             is LoginEffect.Error -> {
                 showSnackbar(effect.message, true)
             }
+            is LoginEffect.Finish -> {
+                val action =
+                    LoginFragmentDirections.actionLoginFragmentToNavGraphDashboard()
+                findNavController().navigate(action)
+            }
         }
     }
+
+//    private fun checkUserProfileCompleted(completed: Int) {
+//        if (completed == 0) {
+//            val action = LoginFragmentDirections.actionLoginFragmentToProfileFragmentForLogin()
+//            findNavController().navigate(action)
+//        } else {
+//            val action =
+//                LoginFragmentDirections.actionLoginFragmentToNavGraphDashboard()
+//            findNavController().navigate(action)
+//        }
+//    }
 
     private fun setListeners() {
         with(binding) {
@@ -84,18 +93,6 @@ class LoginFragment :
         )
     }
 
-    private fun checkUserProfile(user: UserModel) {
-        if (user.profileCompleted == 0) {
-            val action =
-                LoginFragmentDirections.actionLoginFragmentToProfileFragment()
-            findNavController().navigate(action)
-        } else {
-            val action =
-                LoginFragmentDirections.actionLoginFragmentToDashboardActivity()
-            findNavController().navigate(action)
-        }
-    }
-
     private fun showLoginIdle() = with(binding) {
         dismissProgressDialog()
     }
@@ -110,25 +107,5 @@ class LoginFragment :
 
     private fun showLoginError() = with(binding) {
         dismissProgressDialog()
-    }
-
-    private fun initBackPressedCallback() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            if (backPressedTimestamp + TIME_INTERVAL > System.currentTimeMillis()) {
-                isEnabled = false
-                requireActivity().onBackPressed()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Press back again to exit",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            backPressedTimestamp = System.currentTimeMillis()
-        }
-    }
-
-    companion object {
-        private const val TIME_INTERVAL = 2000
     }
 }

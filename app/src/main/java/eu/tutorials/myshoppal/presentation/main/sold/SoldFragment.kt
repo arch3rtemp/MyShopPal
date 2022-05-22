@@ -1,4 +1,4 @@
-package eu.tutorials.myshoppal.presentation.dashboard.sold
+package eu.tutorials.myshoppal.presentation.main.sold
 
 import androidx.fragment.app.Fragment
 

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
     fun loadFromDisk(): Flow<UserModel>
+    fun updateToDisk(userHashMap: HashMap<String, Any>): Flow<Unit>
     fun updateUser(id: String, userHashMap: HashMap<String, Any>): Flow<Unit>
     fun uploadImage(imageFileUri: Uri?, fileExtension: String?): Flow<String>
 }

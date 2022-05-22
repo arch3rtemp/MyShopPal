@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorOffWhite"
     xmlns:shimmer="http://schemas.android.com/tools"
-    tools:context=".presentation.dashboard.sold.SoldFragment">
+    tools:context=".presentation.main.sold.SoldFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_sold_product_items"

@@ -28,7 +28,7 @@ object Constants {
     const val LAST_NAME : String = "lastName"
     const val EMAIL : String = "email"
 
-    const val GENDER: String = "gender"
+    const val SEX: String = "sex"
     const val MOBILE: String = "mobile"
     const val IMAGE: String = "image"
 
@@ -68,6 +68,7 @@ object Constants {
 
     const val EXTRA_SOLD_PRODUCT_DETAILS : String = "extra_sold_product_details"
 
+    const val TIME_INTERVAL = 2000
 
     fun showImageChooser(activity: Activity) {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)

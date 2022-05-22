@@ -15,6 +15,10 @@ class ProfileRepositoryImpl @Inject constructor(
         emit(profileLocalDataSource.loadFromDisk().first())
     }
 
+    override fun updateToDisk(userHashMap: HashMap<String, Any>) = flow {
+        emit(profileLocalDataSource.updateToDisk(userHashMap).first())
+    }
+
     override fun updateUser(id: String, userHashMap: HashMap<String, Any>) = flow {
         emit(profileRemoteDataSource.updateUser(id, userHashMap))
     }

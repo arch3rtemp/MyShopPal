@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProfileLocalDataSource {
     fun loadFromDisk(): Flow<UserModel>
+    suspend fun updateToDisk(userHashMap: HashMap<String, Any>): Flow<Unit>
 }
