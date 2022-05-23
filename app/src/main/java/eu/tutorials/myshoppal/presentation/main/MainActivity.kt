@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            checkVisibility(listOf(
+            checkVisibility(setOf(
                 R.id.profileFragment,
                 R.id.settingsFragment,
                 R.id.loginFragment,
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             ), destination.id)
 
             checkDoubleTapExit(
-                listOf(
+                setOf(
                     R.id.loginFragment,
                     R.id.dashboardFragment
                 ), destination.id
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setupWithNavController(navController)
     }
 
-    private fun checkVisibility(@IntegerRes destinationIds: List<Int>, destinationId: Int) {
+    private fun checkVisibility(@IntegerRes destinationIds: Set<Int>, destinationId: Int) {
         if (destinationIds.contains(destinationId)) {
             supportActionBar?.hide()
             binding.navView.visibility = View.GONE
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkDoubleTapExit(@IntegerRes destinationIds: List<Int>, destinationId: Int) {
+    private fun checkDoubleTapExit(@IntegerRes destinationIds: Set<Int>, destinationId: Int) {
         backPressedCallback.isEnabled = destinationIds.contains(destinationId)
     }
 

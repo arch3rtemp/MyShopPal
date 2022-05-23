@@ -1,5 +1,6 @@
 package eu.tutorials.myshoppal.presentation.main.settings
 
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ class SettingsFragment : BaseFragment<SettingsEvent, SettingsState, SettingsEffe
     override fun prepareView(savedInstanceState: Bundle?) {
         initFirstState()
         setListeners()
+        setupToolbar()
     }
 
     override fun renderState(state: SettingsState) {
@@ -68,17 +70,19 @@ class SettingsFragment : BaseFragment<SettingsEvent, SettingsState, SettingsEffe
 
     private fun setListeners() = with(binding) {
         btnLogout.setOnClickListener {
-            viewModel.setEvent(SettingsEvent.OnSignOut)
+            alertDialogLogout()
         }
-
         tvEdit.setOnClickListener {
             val action = SettingsFragmentDirections.actionSettingsFragmentToProfileFragment()
             findNavController().navigate(action)
         }
-
         llAddress.setOnClickListener {
 
         }
+    }
+
+    private fun setupToolbar() = with(binding) {
+        ivBack.setOnClickListener { findNavController().navigateUp() }
     }
 
     private fun fillInData(user: UserModel) = with(binding) {
@@ -89,6 +93,25 @@ class SettingsFragment : BaseFragment<SettingsEvent, SettingsState, SettingsEffe
         if (user.image.isNotBlank()) {
             CoilLoader(requireContext()).loadUserPicture(Uri.parse(user.image), ivUserPhoto)
         }
+    }
+
+    private fun alertDialogLogout() {
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.app_name))
+            .setMessage("Are you sure you want to Logout?")
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setPositiveButton("Yes") { dialogInterface, _ ->
+                dialogInterface.dismiss()
+                viewModel.setEvent(SettingsEvent.OnSignOut)
+            }
+            .setNegativeButton("No") {
+                    dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+            .create()
+
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
     private fun showSettingsIdle() = with(binding) {

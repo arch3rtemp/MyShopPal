@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -73,6 +74,7 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
     override fun prepareView(savedInstanceState: Bundle?) {
         initFirstState()
         setListeners()
+        setupToolbar()
     }
 
     override fun renderState(state: ProfileState) {
@@ -83,6 +85,9 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
             ViewState.Success -> {
                 showProfileSuccess()
                 fillInData(state.user)
+                if (state.user.profileCompleted == 0) {
+                    setupCompleteProfileScreen()
+                }
             }
         }
     }
@@ -137,6 +142,18 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
         }
     }
 
+    private fun setupToolbar() = with(binding) {
+        ivBack.setOnClickListener { findNavController().navigateUp() }
+    }
+
+    private fun setupCompleteProfileScreen() = with(binding) {
+        ivBack.visibility = View.GONE
+        tvTitle.text = getString(R.string.title_complete_profile)
+
+        etFirstName.isEnabled = false
+        etLastName.isEnabled = false
+    }
+
     private fun getDataFromFields() = with(binding) {
         val sex = if (rbMale.isChecked) {
             Constants.MALE
@@ -179,10 +196,9 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
     }
 
     private fun fillInData(user: UserModel) = with(binding) {
-        etFirstName.isEnabled = false
+
         etFirstName.setText(user.firstName)
 
-        etLastName.isEnabled = false
         etLastName.setText(user.lastName)
 
         etEmail.isEnabled = false
@@ -198,7 +214,9 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
             rbFemale.isChecked = true
         }
 
-        CoilLoader(requireContext()).loadUserPicture(Uri.parse((user.image)), ivUserPhoto)
+        if (user.image.isNotBlank()) {
+            CoilLoader(requireContext()).loadUserPicture(Uri.parse((user.image)), ivUserPhoto)
+        }
     }
 
     private fun showProfileIdle() = with(binding) {
