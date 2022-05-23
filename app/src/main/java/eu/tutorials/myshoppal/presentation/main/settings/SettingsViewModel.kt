@@ -5,6 +5,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.tutorials.myshoppal.domain.use_case.settings.SettingsLoadUserDiskUseCase
 import eu.tutorials.myshoppal.domain.use_case.settings.SettingsLogoutUseCase
 import eu.tutorials.myshoppal.presentation.base.BaseViewModel
+import eu.tutorials.myshoppal.presentation.base.UiText
+import eu.tutorials.myshoppal.utils.Constants
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -31,7 +33,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             settingsLoadUserDiskUseCase()
                 .onStart { setState { copy(viewState = ViewState.Loading) } }
-                .catch { setStateError(it.message.toString()) }
+                .catch { setStateError(UiText.DynamicString(it.message.toString())) }
                 .collect {
                     setState { copy(viewState = ViewState.Success, user = it) }
                     setState { copy(viewState = ViewState.Idle) }
@@ -43,7 +45,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             settingsLogoutUseCase()
                 .onStart { setState { copy(viewState = ViewState.Loading) } }
-                .catch { setStateError(it.message.toString()) }
+                .catch { setStateError(UiText.DynamicString(it.message.toString())) }
                 .collect {
                     setState { copy(viewState = ViewState.Success) }
                     setEffect { SettingsEffect.Finish }
@@ -51,8 +53,8 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun setStateError(message: String) {
+    private fun setStateError(message: UiText) {
         setState { copy(viewState = ViewState.Error) }
-        setEffect { SettingsEffect.Error(message) }
+        setEffect { SettingsEffect.ShowSnackbar(message, Constants.STATUS_ERROR) }
     }
 }

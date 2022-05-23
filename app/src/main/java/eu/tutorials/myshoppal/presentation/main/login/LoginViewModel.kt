@@ -3,10 +3,12 @@ package eu.tutorials.myshoppal.presentation.main.login
 import android.text.TextUtils
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.tutorials.myshoppal.domain.model.UserModel
+import eu.tutorials.myshoppal.R
 import eu.tutorials.myshoppal.domain.use_case.login.LoginUseCase
 import eu.tutorials.myshoppal.presentation.base.BaseViewModel
+import eu.tutorials.myshoppal.presentation.base.UiText
 import eu.tutorials.myshoppal.presentation.model.LoginUser
+import eu.tutorials.myshoppal.utils.Constants
 import eu.tutorials.myshoppal.utils.toUserLoginModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -33,18 +35,9 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun setStateError(message: String) {
-        setState {
-            copy(
-                viewState = ViewState.Error
-            )
-        }
-        setEffect { LoginEffect.Error(message) }
-    }
-
-    private fun setStateSuccess(message: String, user: UserModel) {
-        setState { copy(viewState = ViewState.Success, user = user) }
-        setEffect { LoginEffect.Success(message) }
+    private fun setStateError(message: UiText) {
+        setState { copy(viewState = ViewState.Error) }
+        setEffect { LoginEffect.ShowSnackbar(message, Constants.STATUS_ERROR) }
     }
 
     private fun loginUser(loginUser: LoginUser) {
@@ -53,9 +46,9 @@ class LoginViewModel @Inject constructor(
                 loginUseCase(loginUser.toUserLoginModel())
                     .onStart { setState { copy(viewState = ViewState.Loading) } }
                     .catch {
-                        setStateError(it.message.toString()) }
+                        setStateError(UiText.DynamicString(it.message.toString())) }
                     .collect {
-                        setStateSuccess("Logged in successfully.", it)
+                        setState { copy(viewState = ViewState.Success, user = user) }
                         setState { copy(viewState = ViewState.Idle) }
                         setEffect { LoginEffect.Finish }
                     }
@@ -67,11 +60,11 @@ class LoginViewModel @Inject constructor(
         loginUser.apply {
             return when {
                 TextUtils.isEmpty(email.trim { it <= ' ' }) -> {
-                    setStateError("Please enter an email id.")
+                    setStateError(UiText.StringResource(R.string.error_email))
                     false
                 }
                 TextUtils.isEmpty(password.trim { it <= ' ' }) -> {
-                    setStateError("Please enter a password.")
+                    setStateError(UiText.StringResource(R.string.error_password))
                     false
                 }
                 else -> {

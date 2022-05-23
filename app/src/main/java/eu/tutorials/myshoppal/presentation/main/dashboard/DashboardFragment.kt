@@ -75,7 +75,7 @@ class DashboardFragment : BaseFragment<DashboardEvent, DashboardState, Dashboard
 
     override fun renderEffect(effect: DashboardEffect) {
         when (effect) {
-            is DashboardEffect.Error -> showSnackbar(effect.message, true)
+            is DashboardEffect.ShowSnackbar -> showSnackbar(effect.message.asString(requireContext()), effect.status)
         }
     }
 

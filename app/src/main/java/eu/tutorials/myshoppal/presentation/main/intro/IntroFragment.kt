@@ -36,8 +36,7 @@ class IntroFragment : BaseFragment<IntroEvent, IntroState, IntroEffect, Fragment
 
     override fun renderEffect(effect: IntroEffect) {
         when (effect) {
-            is IntroEffect.Error -> showSnackbar(effect.message, true)
-            is IntroEffect.Success -> showSnackbar(effect.message, false)
+            is IntroEffect.ShowSnackbar -> showSnackbar(effect.message.asString(requireContext()), effect.status)
         }
     }
 

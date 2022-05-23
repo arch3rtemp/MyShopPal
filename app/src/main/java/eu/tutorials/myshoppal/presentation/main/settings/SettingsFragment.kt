@@ -44,11 +44,8 @@ class SettingsFragment : BaseFragment<SettingsEvent, SettingsState, SettingsEffe
 
     override fun renderEffect(effect: SettingsEffect) {
         when (effect) {
-            is SettingsEffect.Error -> {
-                showSnackbar(effect.message, true)
-            }
-            is SettingsEffect.Success -> {
-                showSnackbar(effect.message, false)
+            is SettingsEffect.ShowSnackbar -> {
+                showSnackbar(effect.message.asString(requireContext()), effect.status)
             }
             SettingsEffect.Finish -> {
                 val options = NavOptions

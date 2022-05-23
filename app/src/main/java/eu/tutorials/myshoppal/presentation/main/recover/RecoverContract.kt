@@ -3,6 +3,7 @@ package eu.tutorials.myshoppal.presentation.main.recover
 import eu.tutorials.myshoppal.presentation.base.UiEffect
 import eu.tutorials.myshoppal.presentation.base.UiEvent
 import eu.tutorials.myshoppal.presentation.base.UiState
+import eu.tutorials.myshoppal.presentation.base.UiText
 
 sealed class ViewState {
     object Idle : ViewState()
@@ -16,8 +17,8 @@ sealed class RecoverEvent : UiEvent {
 }
 
 sealed class RecoverEffect : UiEffect {
-    data class Success(val message: String) : RecoverEffect()
-    data class Error(val message: String) : RecoverEffect()
+    data class ShowSnackbar(val message: UiText, val status: String) : RecoverEffect()
+    data class ShowToast(val message: UiText) : RecoverEffect()
 }
 
 data class RecoverState(val viewState: ViewState) : UiState

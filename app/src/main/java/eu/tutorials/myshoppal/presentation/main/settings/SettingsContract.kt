@@ -4,6 +4,7 @@ import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.presentation.base.UiEffect
 import eu.tutorials.myshoppal.presentation.base.UiEvent
 import eu.tutorials.myshoppal.presentation.base.UiState
+import eu.tutorials.myshoppal.presentation.base.UiText
 
 sealed class ViewState {
     object Idle : ViewState()
@@ -18,8 +19,7 @@ sealed class SettingsEvent : UiEvent {
 }
 
 sealed class SettingsEffect: UiEffect {
-    data class Success(val message: String) : SettingsEffect()
-    data class Error(val message: String) : SettingsEffect()
+    data class ShowSnackbar(val message: UiText, val status: String) : SettingsEffect()
     object Finish : SettingsEffect()
 }
 

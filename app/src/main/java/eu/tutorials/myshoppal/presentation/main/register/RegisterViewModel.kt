@@ -3,9 +3,12 @@ package eu.tutorials.myshoppal.presentation.main.register
 import android.text.TextUtils
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.tutorials.myshoppal.R
 import eu.tutorials.myshoppal.domain.use_case.register.RegisterUserUseCase
 import eu.tutorials.myshoppal.presentation.base.BaseViewModel
+import eu.tutorials.myshoppal.presentation.base.UiText
 import eu.tutorials.myshoppal.presentation.model.RegisterUser
+import eu.tutorials.myshoppal.utils.Constants
 import eu.tutorials.myshoppal.utils.toUserRegisterModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -25,18 +28,20 @@ class RegisterViewModel @Inject constructor(
 
     override fun handleEvent(event: RegisterEvent) {
         when (event) {
-            is RegisterEvent.OnRegister -> { registerUser(event.registerUser) }
+            is RegisterEvent.OnRegister -> {
+                registerUser(event.registerUser)
+            }
         }
     }
 
-    private fun setStateError(message: String) {
+    private fun setStateError(message: UiText) {
         setState { copy(viewState = ViewState.Error) }
-        setEffect { RegisterEffect.Error(message) }
+        setEffect { RegisterEffect.ShowSnackbar(message, Constants.STATUS_ERROR) }
     }
 
-    private fun setStateSuccess(message: String) {
+    private fun setStateSuccess(message: UiText) {
         setState { copy(viewState = ViewState.Success) }
-        setEffect { RegisterEffect.Success(message) }
+        setEffect { RegisterEffect.ShowToast(message) }
     }
 
     private fun registerUser(registerUser: RegisterUser) {
@@ -44,41 +49,42 @@ class RegisterViewModel @Inject constructor(
             if (validateRegisterDetails(registerUser)) {
                 registerUserUseCase(registerUser.toUserRegisterModel())
                     .onStart { setState { copy(viewState = ViewState.Loading) } }
-                    .catch { setStateError(it.message.toString()) }
-                    .collect { setStateSuccess("Registered successfully.") }
+                    .catch { setStateError(UiText.DynamicString(it.message.toString())) }
+                    .collect { setStateSuccess(UiText.StringResource(R.string.success_register)) }
             }
         }
     }
 
+
     private fun validateRegisterDetails(registerUser: RegisterUser): Boolean {
         registerUser.apply {
             return when {
-                TextUtils.isEmpty(firstName.trim { it <= ' '}) -> {
-                    setStateError("Please enter first name.")
+                TextUtils.isEmpty(firstName.trim { it <= ' ' }) -> {
+                    setStateError(UiText.StringResource(R.string.error_first_name))
                     false
                 }
-                TextUtils.isEmpty(lastName.trim { it <= ' '}) -> {
-                    setStateError("Please enter last name.")
+                TextUtils.isEmpty(lastName.trim { it <= ' ' }) -> {
+                    setStateError(UiText.StringResource(R.string.error_last_name))
                     false
                 }
-                TextUtils.isEmpty(email.trim { it <= ' '}) -> {
-                    setStateError("Please enter an email id.")
+                TextUtils.isEmpty(email.trim { it <= ' ' }) -> {
+                    setStateError(UiText.StringResource(R.string.error_email))
                     false
                 }
-                TextUtils.isEmpty(password.trim { it <= ' '}) -> {
-                    setStateError("Please enter a password.")
+                TextUtils.isEmpty(password.trim { it <= ' ' }) -> {
+                    setStateError(UiText.StringResource(R.string.error_password))
                     false
                 }
-                TextUtils.isEmpty(password.trim { it <= ' '}) -> {
-                    setStateError("Please enter a confirm password.")
+                TextUtils.isEmpty(confirmPassword.trim { it <= ' ' }) -> {
+                    setStateError(UiText.StringResource(R.string.error_password_confirm))
                     false
                 }
-                password.trim() { it <= ' '} != confirmPassword.trim() { it <= ' '} -> {
-                    setStateError("Password and confirm password does not match")
+                password.trim() { it <= ' ' } != confirmPassword.trim() { it <= ' ' } -> {
+                    setStateError(UiText.StringResource(R.string.error_password_confirm_not_match))
                     false
                 }
                 !checkedTermsAndConditions -> {
-                    setStateError("Please agree terms and conditions.")
+                    setStateError(UiText.StringResource(R.string.error_terms_conditions))
                     false
                 }
                 else -> {

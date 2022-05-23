@@ -1,11 +1,5 @@
 package eu.tutorials.myshoppal.utils
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import android.provider.MediaStore
-import android.webkit.MimeTypeMap
-
 object Constants {
 
     /*Collections*/
@@ -70,13 +64,6 @@ object Constants {
 
     const val TIME_INTERVAL = 2000
 
-    fun showImageChooser(activity: Activity) {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        activity.startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE)
-    }
-    fun getFileExtension(activity: Activity, uri : Uri?) : String?{
-
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(activity.contentResolver.getType(uri!!))
-
-    }
+    const val STATUS_ERROR = "error"
+    const val STATUS_SUCCESS = "success"
 }

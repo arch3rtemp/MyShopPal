@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.tutorials.myshoppal.domain.use_case.intro.RetrieveFirebaseUserUseCase
 import eu.tutorials.myshoppal.presentation.base.BaseViewModel
+import eu.tutorials.myshoppal.presentation.base.UiText
+import eu.tutorials.myshoppal.utils.Constants
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -27,15 +29,15 @@ class IntroViewModel @Inject constructor(
         viewModelScope.launch {
             retrieveFirebaseUserUseCase()
                 .onStart { setState { copy(viewState = ViewState.Loading) } }
-                .catch { setStateError(it.message.toString()) }
+                .catch { setStateError(UiText.DynamicString(it.message.toString())) }
                 .collect {
                     setState { copy(viewState = ViewState.Success, user = it) }
                 }
         }
     }
 
-    private fun setStateError(message: String) {
+    private fun setStateError(message: UiText) {
         setState { copy(viewState = ViewState.Error) }
-        setEffect { IntroEffect.Error(message) }
+        setEffect { IntroEffect.ShowSnackbar(message, Constants.STATUS_ERROR) }
     }
 }

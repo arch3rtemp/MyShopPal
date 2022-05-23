@@ -31,6 +31,14 @@ class DataStoreClientImpl @Inject constructor(
 
     override suspend fun updateUserToDataStore(userHashMap: HashMap<String, Any>) {
         context.dataStore.edit {
+            val firstName = userHashMap[Constants.FIRST_NAME]
+            if (firstName is String) {
+                it[userFirstName] = firstName
+            }
+            val lastName = userHashMap[Constants.LAST_NAME]
+            if (lastName is String) {
+                it[userLastName] = lastName
+            }
             val mobile = userHashMap[Constants.MOBILE]
             if (mobile is Long) {
                 it[userMobile] = mobile

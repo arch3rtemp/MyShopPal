@@ -23,10 +23,7 @@ import eu.tutorials.myshoppal.R
 import eu.tutorials.myshoppal.databinding.FragmentProfileBinding
 import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.presentation.base.BaseFragment
-import eu.tutorials.myshoppal.utils.CoilLoader
-import eu.tutorials.myshoppal.utils.Constants
-import eu.tutorials.myshoppal.utils.getFileExtension
-import eu.tutorials.myshoppal.utils.showSnackbar
+import eu.tutorials.myshoppal.utils.*
 import java.io.IOException
 
 @AndroidEntryPoint
@@ -38,6 +35,8 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
     override val viewModel by viewModels<ProfileViewModel>()
 
     private var selectedImageFileUri: Uri = Uri.EMPTY
+    private var firstName: String = ""
+    private var lastName: String = ""
 
     private val requestPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -94,11 +93,12 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
 
     override fun renderEffect(effect: ProfileEffect) {
         when (effect) {
-            is ProfileEffect.Error -> {
-                showSnackbar(effect.message, true)
+            is ProfileEffect.ShowSnackbar -> {
+                showSnackbar(effect.message.asString(requireContext()), effect.status)
             }
-            is ProfileEffect.Success -> {
-                showSnackbar(effect.message, false)
+
+            is ProfileEffect.ShowToast -> {
+                showToast(effect.message.asString(requireContext()))
             }
             ProfileEffect.Finish -> {
                 val options = NavOptions
@@ -161,6 +161,12 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
             Constants.FEMALE
         }
         val userHashMap = HashMap<String, Any>()
+        if (etFirstName.text.toString() != firstName) {
+            userHashMap[Constants.FIRST_NAME] = etFirstName.text.toString()
+        }
+        if (etLastName.text.toString() != lastName) {
+            userHashMap[Constants.LAST_NAME] = etLastName.text.toString()
+        }
         userHashMap[Constants.MOBILE] = etMobileNumber.text.toString()
         userHashMap[Constants.SEX] = sex
         userHashMap[Constants.PROFILE_COMPLETED] = 1
@@ -182,7 +188,7 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
                 requireActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) -> {
-                showSnackbar(getString(R.string.image_selection_rationale), false)
+                showSnackbar(getString(R.string.image_selection_rationale), Constants.STATUS_ERROR)
             }
             else -> {
                 requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -198,9 +204,9 @@ class ProfileFragment : BaseFragment<ProfileEvent, ProfileState, ProfileEffect, 
     private fun fillInData(user: UserModel) = with(binding) {
 
         etFirstName.setText(user.firstName)
-
+        firstName = user.firstName
         etLastName.setText(user.lastName)
-
+        lastName = user.lastName
         etEmail.isEnabled = false
         etEmail.setText(user.email)
 

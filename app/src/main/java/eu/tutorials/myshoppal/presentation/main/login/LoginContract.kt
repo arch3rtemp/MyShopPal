@@ -4,6 +4,7 @@ import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.presentation.base.UiEffect
 import eu.tutorials.myshoppal.presentation.base.UiEvent
 import eu.tutorials.myshoppal.presentation.base.UiState
+import eu.tutorials.myshoppal.presentation.base.UiText
 import eu.tutorials.myshoppal.presentation.model.LoginUser
 
 sealed class ViewState {
@@ -19,8 +20,7 @@ sealed class LoginEvent : UiEvent {
 }
 
 sealed class LoginEffect : UiEffect {
-    data class Success(val message: String) : LoginEffect()
-    data class Error(val message: String) : LoginEffect()
+    data class ShowSnackbar(val message: UiText, val status: String) : LoginEffect()
     object Finish : LoginEffect()
 }
 

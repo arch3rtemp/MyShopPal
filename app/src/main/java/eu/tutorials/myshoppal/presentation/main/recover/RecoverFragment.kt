@@ -10,9 +10,11 @@ import eu.tutorials.myshoppal.R
 import eu.tutorials.myshoppal.databinding.FragmentRecoverBinding
 import eu.tutorials.myshoppal.presentation.base.BaseFragment
 import eu.tutorials.myshoppal.utils.showSnackbar
+import eu.tutorials.myshoppal.utils.showToast
 
 @AndroidEntryPoint
-class RecoverFragment : BaseFragment<RecoverEvent, RecoverState, RecoverEffect, FragmentRecoverBinding, RecoverViewModel>() {
+class RecoverFragment :
+    BaseFragment<RecoverEvent, RecoverState, RecoverEffect, FragmentRecoverBinding, RecoverViewModel>() {
     override val viewModel by viewModels<RecoverViewModel>()
     override val bindLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentRecoverBinding
         get() = FragmentRecoverBinding::inflate
@@ -23,20 +25,30 @@ class RecoverFragment : BaseFragment<RecoverEvent, RecoverState, RecoverEffect, 
 
     override fun renderState(state: RecoverState) {
         when (state.viewState) {
-            ViewState.Idle -> { showLoginIdle() }
-            ViewState.Loading -> { showLoginLoading() }
+            ViewState.Idle -> {
+                showLoginIdle()
+            }
+            ViewState.Loading -> {
+                showLoginLoading()
+            }
             ViewState.Success -> {
                 showLoginSuccess()
                 findNavController().navigateUp()
             }
-            ViewState.Error -> { showLoginError() }
+            ViewState.Error -> {
+                showLoginError()
+            }
         }
     }
 
     override fun renderEffect(effect: RecoverEffect) {
         when (effect) {
-            is RecoverEffect.Success -> { showSnackbar(effect.message, false) }
-            is RecoverEffect.Error -> { showSnackbar(effect.message, true) }
+            is RecoverEffect.ShowSnackbar -> {
+                showSnackbar(effect.message.asString(requireContext()), effect.status)
+            }
+            is RecoverEffect.ShowToast -> {
+                showToast(effect.message.asString(requireContext()))
+            }
         }
     }
 
@@ -54,9 +66,11 @@ class RecoverFragment : BaseFragment<RecoverEvent, RecoverState, RecoverEffect, 
     private fun showLoginLoading() = with(binding) {
         showProgressDialog(resources.getString(R.string.please_wait))
     }
+
     private fun showLoginSuccess() = with(binding) {
         dismissProgressDialog()
     }
+
     private fun showLoginError() = with(binding) {
         dismissProgressDialog()
     }

@@ -3,8 +3,11 @@ package eu.tutorials.myshoppal.presentation.main.recover
 import android.text.TextUtils
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.tutorials.myshoppal.R
 import eu.tutorials.myshoppal.domain.use_case.recover.RecoverUseCase
 import eu.tutorials.myshoppal.presentation.base.BaseViewModel
+import eu.tutorials.myshoppal.presentation.base.UiText
+import eu.tutorials.myshoppal.utils.Constants
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -25,14 +28,14 @@ class RecoverViewModel @Inject constructor(
         }
     }
 
-    private fun setStateError(message: String) {
+    private fun setStateError(message: UiText) {
         setState { copy(viewState = ViewState.Error) }
-        setEffect { RecoverEffect.Error(message) }
+        setEffect { RecoverEffect.ShowSnackbar(message, Constants.STATUS_ERROR) }
     }
 
-    private fun setStateSuccess(message: String) {
+    private fun setStateSuccess(message: UiText) {
         setState { copy(viewState = ViewState.Success) }
-        setEffect { RecoverEffect.Success(message) }
+        setEffect { RecoverEffect.ShowToast(message) }
     }
 
     private fun recoverPassword(email: String) {
@@ -40,8 +43,8 @@ class RecoverViewModel @Inject constructor(
             if (validateRecoverDetails(email)) {
                 recoverUseCase(email)
                     .onStart { setState { copy(viewState = ViewState.Loading) } }
-                    .catch { setStateError(it.message.toString()) }
-                    .collect { setStateSuccess("Email sent successfully to reset your password!") }
+                    .catch { setStateError(UiText.DynamicString(it.message.toString())) }
+                    .collect { setStateSuccess(UiText.StringResource(R.string.email_sent_successfully)) }
             }
         }
     }
@@ -49,7 +52,7 @@ class RecoverViewModel @Inject constructor(
     private fun validateRecoverDetails(email: String): Boolean {
         return when {
             TextUtils.isEmpty(email.trim { it <= ' '}) -> {
-                setStateError("Please enter your email address.")
+                setStateError(UiText.StringResource(R.string.error_enter_email))
                 false
             }
             else -> { true }

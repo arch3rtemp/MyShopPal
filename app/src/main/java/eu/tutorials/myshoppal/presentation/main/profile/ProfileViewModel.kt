@@ -4,9 +4,12 @@ import android.net.Uri
 import android.text.TextUtils
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.tutorials.myshoppal.R
+import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.domain.use_case.profile.ProfileLoadUserDiskUseCase
 import eu.tutorials.myshoppal.domain.use_case.profile.ProfileUpdateUseCase
 import eu.tutorials.myshoppal.presentation.base.BaseViewModel
+import eu.tutorials.myshoppal.presentation.base.UiText
 import eu.tutorials.myshoppal.utils.Constants
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
@@ -20,7 +23,7 @@ class ProfileViewModel @Inject constructor(
     private val profileUpdateUseCase: ProfileUpdateUseCase
 ) : BaseViewModel<ProfileEvent, ProfileState, ProfileEffect>() {
 
-    private var userId: String = ""
+    private var user: UserModel = UserModel.Empty
     private var isCompleted: Int = -1
 
     override fun createInitialState(): ProfileState {
@@ -42,9 +45,9 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             profileLoadUserDiskUseCase()
                 .onStart { setState { copy(viewState = ViewState.Loading) } }
-                .catch { setStateError(it.message.toString()) }
+                .catch { setStateError(UiText.DynamicString(it.message.toString())) }
                 .onEach {
-                    userId = it.id
+                    user = it
                     isCompleted = it.profileCompleted
                     setState { copy(viewState = ViewState.Success, user = it) }
                 }
@@ -58,11 +61,11 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             if (validateUserProfileDetails(userHashMap)) {
                 convertMobileToLong(userHashMap)
-                profileUpdateUseCase(selectedImageFileUri, fileExtension, userId, userHashMap)
+                profileUpdateUseCase(selectedImageFileUri, fileExtension, user.id, userHashMap)
                     .onStart { setState { copy(viewState = ViewState.Loading) } }
-                    .catch { setStateError(it.message.toString()) }
+                    .catch { setStateError(UiText.DynamicString(it.message.toString())) }
                     .collect {
-                        setStateSuccess("Updated successfully.")
+                        setStateSuccess(UiText.StringResource(R.string.success_update))
                         setState { copy(viewState = ViewState.Idle) }
                         checkNavigation()
                     }
@@ -77,8 +80,16 @@ class ProfileViewModel @Inject constructor(
 
     private fun validateUserProfileDetails(userHashMap: HashMap<String, Any>): Boolean {
         return when {
+            TextUtils.isEmpty(userHashMap[Constants.FIRST_NAME].toString().trim { it <= ' ' }) -> {
+                setStateError(UiText.StringResource(R.string.error_first_name))
+                false
+            }
+            TextUtils.isEmpty(userHashMap[Constants.LAST_NAME].toString().trim { it <= ' ' }) -> {
+                setStateError(UiText.StringResource(R.string.error_last_name))
+                false
+            }
             TextUtils.isEmpty(userHashMap[Constants.MOBILE].toString().trim { it <= ' ' }) -> {
-                setStateError("Please enter mobile number")
+                setStateError(UiText.StringResource(R.string.error_mobile_number))
                 false
             }
             else -> {
@@ -95,14 +106,14 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun setStateError(message: String) {
+    private fun setStateError(message: UiText) {
         setState { copy(viewState = ViewState.Error) }
-        setEffect { ProfileEffect.Error(message) }
+        setEffect { ProfileEffect.ShowSnackbar(message, Constants.STATUS_ERROR) }
     }
 
-    private fun setStateSuccess(message: String) {
+    private fun setStateSuccess(message: UiText) {
         setState { copy(viewState = ViewState.Success) }
-        setEffect { ProfileEffect.Success(message) }
+        setEffect { ProfileEffect.ShowToast(message) }
     }
 
 }

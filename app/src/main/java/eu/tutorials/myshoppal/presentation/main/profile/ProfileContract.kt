@@ -5,6 +5,7 @@ import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.presentation.base.UiEffect
 import eu.tutorials.myshoppal.presentation.base.UiEvent
 import eu.tutorials.myshoppal.presentation.base.UiState
+import eu.tutorials.myshoppal.presentation.base.UiText
 
 sealed class ViewState {
     object Idle : ViewState()
@@ -19,8 +20,8 @@ sealed class ProfileEvent : UiEvent {
 }
 
 sealed class ProfileEffect : UiEffect {
-    data class Success(val message: String) : ProfileEffect()
-    data class Error(val message: String) : ProfileEffect()
+    data class ShowSnackbar(val message: UiText, val status: String) : ProfileEffect()
+    data class ShowToast(val message: UiText) : ProfileEffect()
     object Pop : ProfileEffect()
     object Finish : ProfileEffect()
 }

@@ -43,11 +43,8 @@ class LoginFragment :
 
     override fun renderEffect(effect: LoginEffect) {
         when (effect) {
-            is LoginEffect.Success -> {
-                showSnackbar(effect.message, false)
-            }
-            is LoginEffect.Error -> {
-                showSnackbar(effect.message, true)
+            is LoginEffect.ShowSnackbar -> {
+                showSnackbar(effect.message.asString(requireContext()), effect.status)
             }
             is LoginEffect.Finish -> {
                 val action =
@@ -56,17 +53,6 @@ class LoginFragment :
             }
         }
     }
-
-//    private fun checkUserProfileCompleted(completed: Int) {
-//        if (completed == 0) {
-//            val action = LoginFragmentDirections.actionLoginFragmentToProfileFragmentForLogin()
-//            findNavController().navigate(action)
-//        } else {
-//            val action =
-//                LoginFragmentDirections.actionLoginFragmentToNavGraphDashboard()
-//            findNavController().navigate(action)
-//        }
-//    }
 
     private fun setListeners() {
         with(binding) {

@@ -4,6 +4,7 @@ import eu.tutorials.myshoppal.domain.model.UserModel
 import eu.tutorials.myshoppal.presentation.base.UiEffect
 import eu.tutorials.myshoppal.presentation.base.UiEvent
 import eu.tutorials.myshoppal.presentation.base.UiState
+import eu.tutorials.myshoppal.presentation.base.UiText
 
 
 sealed class ViewState {
@@ -19,7 +20,7 @@ sealed class DashboardEvent : UiEvent {
 }
 
 sealed class DashboardEffect : UiEffect {
-    data class Error(val message: String) : DashboardEffect()
+    data class ShowSnackbar(val message: UiText, val status: String) : DashboardEffect()
 }
 
 data class DashboardState(val viewState: ViewState, val user: UserModel = UserModel.Empty) : UiState

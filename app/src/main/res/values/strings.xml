@@ -10,6 +10,8 @@
     <string name="btn_lbl_login">Login</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="register"><u>Register</u></string>
+    <string name="error_email">Please enter an email id.</string>
+    <string name="error_password">Please enter a password.</string>
 
     <!--Register fragment-->
     <string name="create_an_account">CREATE AN ACCOUNT</string>
@@ -21,12 +23,19 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="login"><u>Login</u></string>
     <string name="please_wait">Please wait…</string>
+    <string name="success_register">Registered successfully.</string>
+    <string name="error_first_name">Please enter first name.</string>
+    <string name="error_last_name">Please enter last name.</string>
+    <string name="error_password_confirm">Please enter a confirm password.</string>
+    <string name="error_password_confirm_not_match">Password and confirm password does not match</string>
+    <string name="error_terms_conditions">Please agree terms and conditions.</string>
 
     <!-- forgot password-->
     <string name="btn_lbl_submit">Submit</string>
     <string name="title_forgot_password">FORGOT PASSWORD</string>
     <string name="forgot_password_title_description">Enter your username and e-mail address we\'ll send you a email to reset your password</string>
     <string name="email_sent_successfully">Email sent successfully to reset your password!</string>
+    <string name="error_enter_email">Please enter your email address</string>
 
     <!-- user profile fragment -->
     <string name="title_edit_profile">EDIT PROFILE</string>
@@ -38,8 +47,8 @@
     <string name="image_selection_rationale">Storage read access is needed for image selection</string>
     <string name="read_storage_permission_denied">Oops! It seems like you just denied the permission needed. You can also allow it from settings.</string>
     <string name="image_selection_failed">Something went wrong during image selection</string>
-
-    <string name="error_mobile_number">Please enter mobile number</string>
+    <string name="success_update">Updated successfully.</string>
+    <string name="error_mobile_number">Please enter mobile number.</string>
 
     <string name="profile_update_success_message">Profile updated successfully</string>
 

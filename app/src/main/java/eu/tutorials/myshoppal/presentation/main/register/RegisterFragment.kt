@@ -11,6 +11,7 @@ import eu.tutorials.myshoppal.databinding.FragmentRegisterBinding
 import eu.tutorials.myshoppal.presentation.base.BaseFragment
 import eu.tutorials.myshoppal.presentation.model.RegisterUser
 import eu.tutorials.myshoppal.utils.showSnackbar
+import eu.tutorials.myshoppal.utils.showToast
 
 @AndroidEntryPoint
 class RegisterFragment : BaseFragment<RegisterEvent, RegisterState, RegisterEffect, FragmentRegisterBinding, RegisterViewModel>() {
@@ -37,8 +38,10 @@ class RegisterFragment : BaseFragment<RegisterEvent, RegisterState, RegisterEffe
 
     override fun renderEffect(effect: RegisterEffect) {
         when (effect) {
-            is RegisterEffect.Success -> { showSnackbar(effect.message, false) }
-            is RegisterEffect.Error -> { showSnackbar(effect.message, true) }
+            is RegisterEffect.ShowSnackbar -> { showSnackbar(effect.message.asString(requireContext()), effect.status) }
+            is RegisterEffect.ShowToast -> {
+                showToast(effect.message.asString(requireContext()))
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,8 +10,7 @@
     android:paddingStart="@dimen/item_address_paddingStartEnd"
     android:paddingTop="@dimen/item_address_paddingTopBottom"
     android:paddingEnd="@dimen/item_address_paddingStartEnd"
-    android:paddingBottom="@dimen/item_address_paddingTopBottom"
-    >
+    android:paddingBottom="@dimen/item_address_paddingTopBottom">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,9 +48,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/address_details_marginTop"
+        android:background="@color/placeholder_bg"
         android:textColor="@color/item_value_text_color"
         android:textSize="@dimen/address_details_textSize"
-        android:background="@color/placeholder_bg"
         tools:text="XYZ" />
 
     <eu.tutorials.myshoppal.utils.MSPTextView
@@ -58,8 +58,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/address_details_marginTop"
+        android:background="@color/placeholder_bg"
         android:textColor="@color/item_value_text_color"
         android:textSize="@dimen/address_details_textSize"
-        android:background="@color/placeholder_bg"
         tools:text="+64 123456789" />
 </LinearLayout>

@@ -3,6 +3,7 @@ package eu.tutorials.myshoppal.presentation.main.register
 import eu.tutorials.myshoppal.presentation.base.UiEffect
 import eu.tutorials.myshoppal.presentation.base.UiEvent
 import eu.tutorials.myshoppal.presentation.base.UiState
+import eu.tutorials.myshoppal.presentation.base.UiText
 import eu.tutorials.myshoppal.presentation.model.RegisterUser
 
 sealed class ViewState {
@@ -17,8 +18,8 @@ sealed class RegisterEvent : UiEvent {
 }
 
 sealed class RegisterEffect : UiEffect {
-    data class Success(val message: String) : RegisterEffect()
-    data class Error(val message: String) : RegisterEffect()
+    data class ShowSnackbar(val message: UiText, val status: String) : RegisterEffect()
+    data class ShowToast(val message: UiText) : RegisterEffect()
 }
 
 data class RegisterState(val viewState: ViewState) : UiState
